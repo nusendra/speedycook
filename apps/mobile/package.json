@@ -12,5 +12,13 @@
   },
   "scripts": {
     "postinstall": "rm -r node_modules && cd ../../ && yarn install && npx nx sync-deps mobile && npx nx ensure-symlink mobile"
+  },
+  "resolutions": {
+    "metro": "0.76.0",
+    "metro-resolver": "0.76.0"
+  },
+  "overrides": {
+    "metro": "0.76.0",
+    "metro-resolver": "0.76.0"
   }
 }

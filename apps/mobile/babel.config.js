@@ -12,6 +12,7 @@ module.exports = function (api) {
           include: 'TAMAGUI_TARGET',
         },
       ],
+      require.resolve('expo-router/babel'),
       // NOTE: this is optional, you don't *need* the compiler
       [
         '@tamagui/babel-plugin',
