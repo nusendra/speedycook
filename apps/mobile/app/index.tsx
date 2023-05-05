@@ -1,11 +1,10 @@
 import useCachedResources from '../hooks/useCachedResources';
-import { StatusBar } from 'expo-status-bar';
 import ResponsiveImage from 'react-native-responsive-image';
-import { TamaguiProvider, Theme, YStack, Image } from 'tamagui';
+import { YStack } from 'tamagui';
 import { Text, StyleSheet, Animated, Easing } from 'react-native';
+import { useEffect } from 'react';
 import { responsiveFontSize } from '../styles/ResponsiveFontSize';
 import { dark } from '../styles/tamagui';
-import config from '../tamagui.config';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -25,29 +24,33 @@ export default function App() {
     outputRange: ['0deg', '360deg'],
   });
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('test');
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!isLoadingComplete) {
     return null;
   }
 
   return (
-    <TamaguiProvider config={config}>
-      <StatusBar style="auto" />
-      <Theme name="light">
-        <YStack f={1} jc="center" ai="center" backgroundColor={dark}>
-          <ResponsiveImage
-            source={require('../assets/logo.png')}
-            initWidth="127"
-            initHeight="173"
-          />
-          <Text style={styles.title}>SpeedyCook</Text>
+    <>
+      <YStack f={1} jc="center" ai="center" backgroundColor={dark}>
+        <ResponsiveImage
+          source={require('../assets/logo.png')}
+          initWidth="127"
+          initHeight="173"
+        />
+        <Text style={styles.title}>SpeedyCook</Text>
 
-          <Animated.Image
-            style={[styles.loading, { transform: [{ rotate: spin }] }]}
-            source={require('../assets/progress.png')}
-          />
-        </YStack>
-      </Theme>
-    </TamaguiProvider>
+        <Animated.Image
+          style={[styles.loading, { transform: [{ rotate: spin }] }]}
+          source={require('../assets/progress.png')}
+        />
+      </YStack>
+    </>
   );
 }
 
