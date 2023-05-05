@@ -1,13 +1,14 @@
 import useCachedResources from '../hooks/useCachedResources';
 import ResponsiveImage from 'react-native-responsive-image';
-import { YStack } from 'tamagui';
 import { Text, StyleSheet, Animated, Easing } from 'react-native';
+import { YStack } from 'tamagui';
 import { useEffect } from 'react';
 import { responsiveFontSize } from '../styles/ResponsiveFontSize';
-import { dark } from '../styles/tamagui';
+import { useRouter } from 'expo-router';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
+  const router = useRouter();
 
   const spinValue = new Animated.Value(0);
   Animated.loop(
@@ -26,7 +27,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log('test');
+      router.push('/welcome');
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
@@ -37,7 +38,7 @@ export default function App() {
 
   return (
     <>
-      <YStack f={1} jc="center" ai="center" backgroundColor={dark}>
+      <YStack f={1} jc="center" ai="center">
         <ResponsiveImage
           source={require('../assets/logo.png')}
           initWidth="127"
