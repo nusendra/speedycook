@@ -2,7 +2,7 @@ import { createAnimations } from '@tamagui/animations-react-native';
 import { createInterFont } from '@tamagui/font-inter';
 import { createMedia } from '@tamagui/react-native-media-driver';
 import { shorthands } from '@tamagui/shorthands';
-import { themes, tokens } from '@tamagui/themes';
+import { themes, tokens } from './src/styles/tamagui';
 import { createTamagui } from 'tamagui';
 
 const animations = createAnimations({
@@ -30,7 +30,7 @@ const bodyFont = createInterFont();
 
 const config = createTamagui({
   animations,
-  defaultTheme: 'dark',
+  defaultTheme: 'light',
   shouldAddPrefersColorThemes: false,
   themeClassNameOnRoot: false,
   shorthands,
