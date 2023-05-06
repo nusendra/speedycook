@@ -1,6 +1,12 @@
-import { StyleSheet, Text, StyleProp, ViewStyle } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native';
 import React, { ReactNode } from 'react';
-import { Button, XStack, Stack } from 'tamagui';
+import { XStack, Stack } from 'tamagui';
 
 interface PropsType {
   title: string;
@@ -15,12 +21,12 @@ const RoundedButton: React.FC<PropsType> = ({
 }) => {
   return (
     <>
-      <Button unstyled style={[customStyle, styles.actionButton]}>
+      <TouchableOpacity style={[customStyle, styles.actionButton]}>
         <XStack>
           <Stack>{children}</Stack>
           <Text style={styles.buttonText}>{title}</Text>
         </XStack>
-      </Button>
+      </TouchableOpacity>
     </>
   );
 };
