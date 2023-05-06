@@ -28,7 +28,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/welcome');
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -44,7 +44,7 @@ export default function App() {
           initWidth="127"
           initHeight="173"
         />
-        <Text style={styles.title}>SpeedyCook</Text>
+        <Text style={styles.title}>Speedycook</Text>
 
         <Animated.Image
           style={[styles.loading, { transform: [{ rotate: spin }] }]}
