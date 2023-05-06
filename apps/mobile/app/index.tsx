@@ -27,7 +27,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/welcome');
+      router.push('/authentication');
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
