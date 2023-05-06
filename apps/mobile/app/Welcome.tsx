@@ -1,8 +1,9 @@
 import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../styles/ResponsiveFontSize';
-import { Text, StyleSheet, View } from 'react-native';
-import { ZStack, Stack, Separator, YStack, Button, XStack } from 'tamagui';
+import { Text, StyleSheet } from 'react-native';
+import { ZStack, Stack, Separator, YStack } from 'tamagui';
 import { dark2, dark4, red1 } from '../styles/tamagui';
+import RoundedButton from '../components/RoundedButton';
 
 export default function Welcome() {
   return (
@@ -36,36 +37,24 @@ export default function Welcome() {
         </Text>
         <YStack width="100%" maxWidth={334} marginHorizontal={15} mt={32}>
           <Separator marginHorizontal={15} borderColor={dark4} />
-          <Button
-            color={dark2}
-            unstyled
-            style={[styles.googleButton, styles.actionButton]}
+          <RoundedButton
+            title="Continue with Google"
+            customStyle={styles.googleButton}
           >
-            <XStack>
-              <ResponsiveImage
-                source={require('../assets/google.png')}
-                initWidth="23"
-                initHeight="23"
-              />
-              <Text style={styles.buttonText}>Continue with Google</Text>
-            </XStack>
-          </Button>
-          <Button
-            unstyled
-            style={[styles.getStartedButton, styles.actionButton]}
-          >
-            <XStack>
-              <Text style={styles.buttonText}>Get Started</Text>
-            </XStack>
-          </Button>
-          <Button
-            unstyled
-            style={[styles.haveAccountButton, styles.actionButton]}
-          >
-            <XStack>
-              <Text style={styles.buttonText}>I Already Have an Account</Text>
-            </XStack>
-          </Button>
+            <ResponsiveImage
+              source={require('../assets/google.png')}
+              initWidth="23"
+              initHeight="23"
+            />
+          </RoundedButton>
+          <RoundedButton
+            title="Get Started"
+            customStyle={styles.getStartedButton}
+          />
+          <RoundedButton
+            title="I Already Have an Account"
+            customStyle={styles.haveAccountButton}
+          />
         </YStack>
       </Stack>
     </>
@@ -91,19 +80,6 @@ const styles = StyleSheet.create({
     paddingLeft: 48,
     marginTop: 20,
     textAlign: 'center',
-  },
-  buttonText: {
-    fontFamily: 'UrbanistBold',
-    color: 'white',
-    fontSize: 16,
-    marginLeft: 12,
-  },
-  actionButton: {
-    width: 330,
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 60,
   },
   googleButton: {
     backgroundColor: dark2,
