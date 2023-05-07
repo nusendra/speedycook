@@ -2,15 +2,36 @@ import RoundedButton from '../../components/RoundedButton';
 import ResponsiveImage from 'react-native-responsive-image';
 import { Pressable, StyleSheet } from 'react-native';
 import { XStack, YStack, ZStack } from 'tamagui';
-import { Slot, useRouter } from 'expo-router';
+import { Slot, useRouter, usePathname } from 'expo-router';
 import { red1 } from '../../styles/tamagui';
 
 export default function OnboardingLayout() {
   const router = useRouter();
+  const pathName = usePathname();
+
+  const enum PathList {
+    COOKING_LEVEL = '/onboarding/1CookingLevel',
+    YOUR_FOODS = '/onboarding/2YourFoods',
+  }
 
   const goBack = () => {
     router.back();
   };
+
+  const showProgress = () => {
+    if (pathName === PathList.COOKING_LEVEL) {
+      return require('../../assets/progress1.png');
+    } else if (pathName === PathList.YOUR_FOODS) {
+      return require('../../assets/progress2.png');
+    }
+  };
+
+  const onSubmit = () => {
+    if (pathName === PathList.COOKING_LEVEL) {
+      router.push(PathList.YOUR_FOODS);
+    }
+  };
+
   return (
     <>
       <YStack mt={55} ml={24} mr={24}>
@@ -36,7 +57,7 @@ export default function OnboardingLayout() {
           </ZStack>
           <XStack mt={23} f={1} jc="center" ai="center">
             <ResponsiveImage
-              source={require('../../assets/progress1.png')}
+              source={showProgress()}
               initWidth="216"
               initHeight="12"
             />
@@ -49,6 +70,7 @@ export default function OnboardingLayout() {
           title="Continue"
           customStyle={[styles.continueButton]}
           width="100%"
+          onPress={onSubmit}
         />
       </YStack>
     </>
