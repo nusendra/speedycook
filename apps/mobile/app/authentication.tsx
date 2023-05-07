@@ -4,8 +4,17 @@ import { Text, StyleSheet } from 'react-native';
 import { ZStack, Stack, Separator, YStack } from 'tamagui';
 import { dark2, dark4, red1 } from '../styles/tamagui';
 import RoundedButton from '../components/RoundedButton';
+import { useRouter } from 'expo-router';
 
 export default function Welcome() {
+  const router = useRouter();
+
+  const sign = (type: string) => {
+    console.log(type);
+
+    router.push('/onboarding/1CookingLevel');
+  };
+
   return (
     <>
       <ZStack
@@ -40,6 +49,7 @@ export default function Welcome() {
           <RoundedButton
             title="Continue with Google"
             customStyle={styles.googleButton}
+            onPress={() => sign('google')}
           >
             <ResponsiveImage
               source={require('../assets/google.png')}
@@ -50,10 +60,12 @@ export default function Welcome() {
           <RoundedButton
             title="Get Started"
             customStyle={styles.getStartedButton}
+            onPress={() => sign('get_started')}
           />
           <RoundedButton
             title="I Already Have an Account"
             customStyle={styles.haveAccountButton}
+            onPress={() => sign('sign_in')}
           />
         </YStack>
       </Stack>

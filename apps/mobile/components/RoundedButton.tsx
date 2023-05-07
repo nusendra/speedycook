@@ -10,18 +10,25 @@ import { XStack, Stack } from 'tamagui';
 
 interface PropsType {
   title: string;
+  width?: number | string;
   children?: ReactNode;
-  customStyle: StyleProp<ViewStyle>;
+  customStyle?: StyleProp<ViewStyle>;
+  onPress?: () => void;
 }
 
 const RoundedButton: React.FC<PropsType> = ({
   title,
   children,
   customStyle,
+  onPress,
+  width = 330,
 }) => {
   return (
     <>
-      <TouchableOpacity style={[customStyle, styles.actionButton]}>
+      <TouchableOpacity
+        style={[customStyle, styles.actionButton, { width }]}
+        onPress={onPress}
+      >
         <XStack>
           <Stack>{children}</Stack>
           <Text style={styles.buttonText}>{title}</Text>
@@ -39,7 +46,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   actionButton: {
-    width: 330,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
