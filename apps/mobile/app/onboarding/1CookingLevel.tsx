@@ -17,7 +17,7 @@ export default function CookingLevel() {
     <>
       <YStack mt={55} ml={24} mr={24} mb={36}>
         <XStack>
-          <Stack>
+          <ZStack>
             <Pressable
               style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
               hitSlop={{
@@ -35,7 +35,7 @@ export default function CookingLevel() {
                 style={{ marginTop: 15 }}
               ></ResponsiveImage>
             </Pressable>
-          </Stack>
+          </ZStack>
           <XStack mt={23} f={1} jc="center" ai="center">
             <ResponsiveImage
               source={require('../../assets/progress1.png')}
