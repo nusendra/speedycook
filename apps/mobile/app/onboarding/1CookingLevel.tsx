@@ -1,55 +1,16 @@
-import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
-import { XStack, YStack, ZStack, Stack, ScrollView } from 'tamagui';
-import { dark2, dark4, dark, red1 } from '../../styles/tamagui';
-import RoundedButton from '../../components/RoundedButton';
-import { useRouter } from 'expo-router';
+import { YStack, ScrollView } from 'tamagui';
+import { dark2, dark4, dark } from '../../styles/tamagui';
 
 export default function CookingLevel() {
-  const router = useRouter();
-
-  const goBack = () => {
-    router.back();
-  };
-
   return (
     <>
-      <YStack mt={55} ml={24} mr={24} mb={36}>
-        <XStack>
-          <ZStack>
-            <Pressable
-              style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
-              hitSlop={{
-                left: 100,
-                right: 100,
-                bottom: 100,
-                top: 100,
-              }}
-              onPress={goBack}
-            >
-              <ResponsiveImage
-                source={require('../../assets/arrow-left.png')}
-                initWidth="28"
-                initHeight="28"
-                style={{ marginTop: 15 }}
-              ></ResponsiveImage>
-            </Pressable>
-          </ZStack>
-          <XStack mt={23} f={1} jc="center" ai="center">
-            <ResponsiveImage
-              source={require('../../assets/progress1.png')}
-              initWidth="216"
-              initHeight="12"
-            />
-          </XStack>
-        </XStack>
-        <YStack>
-          <Text style={styles.title}>What is your cooking level? 🍳</Text>
-          <Text style={styles.subTitle}>
-            Please select your cooking level for a better recommendations.
-          </Text>
-        </YStack>
+      <YStack ml={24} mr={24} mb={36}>
+        <Text style={styles.title}>What is your cooking level? 🍳</Text>
+        <Text style={styles.subTitle}>
+          Please select your cooking level for a better recommendations.
+        </Text>
       </YStack>
       <YStack f={1} ml={24} mr={24}>
         <ScrollView width="100%" backgroundColor={dark}>
@@ -89,13 +50,6 @@ export default function CookingLevel() {
           </TouchableOpacity>
         </ScrollView>
       </YStack>
-      <YStack f={0.15} jc="flex-end" mb={36} ml={24} mr={24} mt={24}>
-        <RoundedButton
-          title="Continue"
-          customStyle={[styles.continueButton]}
-          width="100%"
-        />
-      </YStack>
     </>
   );
 }
@@ -134,8 +88,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: responsiveFontSize(16),
     marginTop: 8,
-  },
-  continueButton: {
-    backgroundColor: red1,
   },
 });
