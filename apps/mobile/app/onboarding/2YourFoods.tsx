@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Pressable,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';

@@ -18,15 +18,12 @@ import {
 } from '@tamagui/colors';
 import { Variable, createTokens } from '@tamagui/web';
 
-const xDark = {
-  xDark: '#181A20',
-};
-
 export const size = {
   $0: 0,
   '$0.25': 2,
   '$0.5': 4,
   '$0.75': 8,
+  '$0.8': 16,
   $1: 20,
   '$1.5': 24,
   $2: 28,

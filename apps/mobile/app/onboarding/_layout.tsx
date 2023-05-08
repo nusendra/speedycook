@@ -12,6 +12,7 @@ export default function OnboardingLayout() {
   const enum PathList {
     COOKING_LEVEL = '/onboarding/1CookingLevel',
     YOUR_FOODS = '/onboarding/2YourFoods',
+    ALLERGIES = '/onboarding/3Allergies',
   }
 
   const goBack = () => {
@@ -21,7 +22,10 @@ export default function OnboardingLayout() {
   const showProgress = () => {
     if (pathName === PathList.COOKING_LEVEL) {
       return require('../../assets/progress1.png');
-    } else if (pathName === PathList.YOUR_FOODS) {
+    } else if (
+      pathName === PathList.YOUR_FOODS ||
+      pathName === PathList.ALLERGIES
+    ) {
       return require('../../assets/progress2.png');
     }
   };
@@ -29,6 +33,8 @@ export default function OnboardingLayout() {
   const onSubmit = () => {
     if (pathName === PathList.COOKING_LEVEL) {
       router.push(PathList.YOUR_FOODS);
+    } else if (pathName === PathList.YOUR_FOODS) {
+      router.push(PathList.ALLERGIES);
     }
   };
 
