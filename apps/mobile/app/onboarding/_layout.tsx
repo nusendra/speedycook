@@ -13,6 +13,7 @@ export default function OnboardingLayout() {
     COOKING_LEVEL = '/onboarding/1CookingLevel',
     YOUR_FOODS = '/onboarding/2YourFoods',
     ALLERGIES = '/onboarding/3Allergies',
+    DIETARY = '/onboarding/4Dietary',
   }
 
   const goBack = () => {
@@ -24,7 +25,8 @@ export default function OnboardingLayout() {
       return require('../../assets/progress1.png');
     } else if (
       pathName === PathList.YOUR_FOODS ||
-      pathName === PathList.ALLERGIES
+      pathName === PathList.ALLERGIES ||
+      pathName === PathList.DIETARY
     ) {
       return require('../../assets/progress2.png');
     }
@@ -35,6 +37,8 @@ export default function OnboardingLayout() {
       router.push(PathList.YOUR_FOODS);
     } else if (pathName === PathList.YOUR_FOODS) {
       router.push(PathList.ALLERGIES);
+    } else if (pathName === PathList.ALLERGIES) {
+      router.push(PathList.DIETARY);
     }
   };
 
