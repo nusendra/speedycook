@@ -16,6 +16,7 @@ export default function OnboardingLayout() {
     ALLERGIES = '/onboarding/3Allergies',
     DIETARY = '/onboarding/4Dietary',
     COMPLETE_PROFILE = '/onboarding/5CompleteProfile',
+    CREATE_ACCOUNT = '/onboarding/6CreateAccount',
   }
 
   const goBack = () => {
@@ -33,6 +34,8 @@ export default function OnboardingLayout() {
       return require('../../assets/progress2.png');
     } else if (pathName === PathList.COMPLETE_PROFILE) {
       return require('../../assets/progress3.png');
+    } else if (pathName === PathList.CREATE_ACCOUNT) {
+      return require('../../assets/progress4.png');
     }
   };
 
@@ -45,6 +48,8 @@ export default function OnboardingLayout() {
       router.push(PathList.DIETARY);
     } else if (pathName === PathList.DIETARY) {
       router.push(PathList.COMPLETE_PROFILE);
+    } else if (pathName === PathList.COMPLETE_PROFILE) {
+      router.push(PathList.CREATE_ACCOUNT);
     }
   };
 
