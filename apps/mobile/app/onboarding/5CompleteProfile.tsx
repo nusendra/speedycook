@@ -1,54 +1,38 @@
 import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
-import { XStack, YStack, ZStack } from 'tamagui';
+import { XStack, YStack, ZStack, RadioGroup, Label } from 'tamagui';
 import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Image,
+  SafeAreaView,
   Text,
   View,
-  Button,
-  Platform,
 } from 'react-native';
-import { useState, useCallback } from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { useState } from 'react';
 import { red1, dark4, dark } from '../../styles/tamagui';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Modal from 'react-native-modal';
+
+type Gender = 'Male' | 'Female' | '';
 
 export default function CompleteProfile() {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
-  ]);
+  const [genderModalOpen, setGenderModalOpen] = useState(false);
+  const [gender, setGender] = useState<Gender>('');
 
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [showDatepicker, setShowDatepicker] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setShow(false);
+    setShowDatepicker(false);
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    if (Platform.OS === 'android') {
-      setShow(false);
-      // for iOS, add a button that closes the picker
-    }
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
+  const changeGender = (gender: Gender) => {
+    setGender(gender);
+    setGenderModalOpen(false);
   };
 
   return (
@@ -75,76 +59,109 @@ export default function CompleteProfile() {
             initHeight="30"
           />
         </YStack>
-        <YStack top={134}>
+        <YStack f={1} mt={140}>
           <YStack>
-            <Text style={styles.formText}>Full Name</Text>
-            <TextInput
-              style={styles.formInput}
-              placeholder="Full Name"
-              placeholderTextColor={dark4}
-            />
-          </YStack>
-          <YStack mt={24}>
-            <Text style={styles.formText}>Phone Number</Text>
-            <TextInput
-              style={styles.formInput}
-              placeholder="+1 000 000 000"
-              placeholderTextColor={dark4}
-            />
-          </YStack>
-          <YStack mt={24}>
-            <Text style={styles.formText}>Gender</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              autoScroll={true}
-              placeholder="Gender"
-              dropDownContainerStyle={{
-                backgroundColor: dark,
-              }}
-              style={{
-                backgroundColor: 'transparent',
-                borderColor: dark,
-                borderBottomColor: red1,
-                borderBottomWidth: 1.0,
-                borderRadius: 0,
-              }}
-              textStyle={{
-                fontFamily: 'UrbanistBold',
-                color: 'white',
-                fontSize: responsiveFontSize(20),
-              }}
-              placeholderStyle={{
-                fontFamily: 'UrbanistBold',
-                color: dark4,
-                fontSize: responsiveFontSize(20),
-              }}
-              ArrowDownIconComponent={({ style }) => (
-                <ResponsiveImage
-                  source={require('../../assets/arrow-down.png')}
-                  initWidth="28"
-                  initHeight="28"
+            <ScrollView>
+              <YStack>
+                <Text style={styles.formText}>Full Name</Text>
+                <TextInput
+                  style={[styles.formInput, styles.formInputContainer]}
+                  placeholder="Full Name"
+                  placeholderTextColor={dark4}
                 />
-              )}
-            />
-          </YStack>
-          <YStack>
-            <Button onPress={showDatepicker} title="Show date picker!" />
-            <Button onPress={showTimepicker} title="Show time picker!" />
-            <Text>selected: {date.toLocaleString()}</Text>
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              display="calendar"
-              onChange={onChange}
-            />
+              </YStack>
+              <YStack mt={24}>
+                <Text style={styles.formText}>Phone Number</Text>
+                <TextInput
+                  style={[styles.formInput, styles.formInputContainer]}
+                  placeholder="+1 000 000 000"
+                  placeholderTextColor={dark4}
+                />
+              </YStack>
+              <YStack mt={24}>
+                <Text style={styles.formText}>Gender</Text>
+                <XStack>
+                  <TouchableOpacity
+                    style={styles.formInputContainer}
+                    onPress={() => setGenderModalOpen(true)}
+                  >
+                    <TextInput
+                      style={styles.formInput}
+                      placeholder="Gender"
+                      placeholderTextColor={dark4}
+                      editable={false}
+                      value={gender}
+                    />
+                  </TouchableOpacity>
+                  <ResponsiveImage
+                    source={require('../../assets/arrow-down.png')}
+                    initWidth="28"
+                    initHeight="28"
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      right: 10,
+                    }}
+                  />
+                </XStack>
+              </YStack>
+              <YStack mt={24}>
+                <Text style={styles.formText}>Date of Birth</Text>
+                <XStack>
+                  <TouchableOpacity
+                    style={styles.formInputContainer}
+                    onPress={() => setShowDatepicker(true)}
+                  >
+                    <TextInput
+                      style={styles.formInput}
+                      placeholder="MM/DD/YYYY"
+                      placeholderTextColor={dark4}
+                      editable={false}
+                      value={date.toLocaleDateString()}
+                    />
+                    <ResponsiveImage
+                      source={require('../../assets/Calendar.png')}
+                      initWidth="28"
+                      initHeight="28"
+                      style={{
+                        position: 'absolute',
+                        alignSelf: 'center',
+                        right: 10,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </XStack>
+              </YStack>
+            </ScrollView>
           </YStack>
         </YStack>
       </ZStack>
+      <Modal isVisible={genderModalOpen}>
+        <View style={styles.selectContainer}>
+          <XStack flex={1} flexDirection="row" justifyContent="space-between">
+            <TouchableOpacity
+              style={styles.selectItem}
+              onPress={() => changeGender('Male')}
+            >
+              <Text style={styles.selectText}>MALE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.selectItem}
+              onPress={() => changeGender('Female')}
+            >
+              <Text style={styles.selectText}>FEMALE</Text>
+            </TouchableOpacity>
+          </XStack>
+        </View>
+      </Modal>
+      {showDatepicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          display="calendar"
+          onChange={onChange}
+        />
+      )}
     </>
   );
 }
@@ -167,13 +184,53 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: responsiveFontSize(16),
   },
-  formInput: {
-    fontFamily: 'UrbanistBold',
-    color: 'white',
-    fontSize: responsiveFontSize(20),
+  formInputContainer: {
     marginTop: 16,
     borderBottomWidth: 1.0,
     borderBottomColor: red1,
     paddingBottom: 8,
+    width: '100%',
+  },
+  formInput: {
+    fontFamily: 'UrbanistBold',
+    color: 'white',
+    fontSize: responsiveFontSize(20),
+  },
+  dropDown: {
+    backgroundColor: 'transparent',
+    borderColor: dark,
+    borderBottomColor: red1,
+    borderBottomWidth: 1.0,
+    borderRadius: 0,
+  },
+  dropDownText: {
+    fontFamily: 'UrbanistBold',
+    color: 'white',
+    fontSize: responsiveFontSize(20),
+  },
+  dropDownPlaceholder: {
+    fontFamily: 'UrbanistBold',
+    color: dark4,
+    fontSize: responsiveFontSize(20),
+  },
+  selectContainer: {
+    backgroundColor: dark,
+    height: 130,
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  selectItem: {
+    backgroundColor: dark4,
+    height: '100%',
+    width: '45%',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectText: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'UrbanistBold',
   },
 });

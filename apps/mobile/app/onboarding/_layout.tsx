@@ -1,11 +1,12 @@
 import RoundedButton from '../../components/RoundedButton';
 import ResponsiveImage from 'react-native-responsive-image';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { XStack, YStack, ZStack } from 'tamagui';
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { red1 } from '../../styles/tamagui';
 
 export default function OnboardingLayout() {
+  const height = Dimensions.get('window').height;
   const router = useRouter();
   const pathName = usePathname();
 
@@ -79,15 +80,17 @@ export default function OnboardingLayout() {
           </XStack>
         </XStack>
       </YStack>
-      <Slot />
-      <YStack f={0.15} jc="flex-end" mb={36} ml={24} mr={24} mt={24}>
-        <RoundedButton
-          title="Continue"
-          customStyle={[styles.continueButton]}
-          width="100%"
-          onPress={onSubmit}
-        />
-      </YStack>
+      <SafeAreaView style={{ height: height - 40 }}>
+        <Slot />
+        <YStack f={0.15} jc="flex-end" mb={36} ml={24} mr={24} mt={24}>
+          <RoundedButton
+            title="Continue"
+            customStyle={[styles.continueButton]}
+            width="100%"
+            onPress={onSubmit}
+          />
+        </YStack>
+      </SafeAreaView>
     </>
   );
 }
@@ -95,5 +98,7 @@ export default function OnboardingLayout() {
 const styles = StyleSheet.create({
   continueButton: {
     backgroundColor: red1,
+    position: 'absolute',
+    bottom: 0,
   },
 });
