@@ -71,6 +71,10 @@ export default function OnboardingLayout() {
     switch (pathName) {
       case PathList.CREATE_ACCOUNT:
         setCreated(true);
+
+        setTimeout(() => {
+          router.push('/search');
+        }, 3000);
         break;
       default:
         if (pathName === PathList.COOKING_LEVEL) {

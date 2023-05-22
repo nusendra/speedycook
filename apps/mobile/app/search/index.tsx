@@ -1,17 +1,18 @@
-import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
-import ResponsiveImage from 'react-native-responsive-image';
 import {
-  Text,
   StyleSheet,
+  Text,
   TextInput,
   View,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import { XStack, YStack, Separator } from 'tamagui';
+import { YStack, Separator, XStack } from 'tamagui';
+import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
+import ResponsiveImage from 'react-native-responsive-image';
 import { red1, dark4 } from '../../styles/tamagui';
+import RoundedButton from '../../components/RoundedButton';
 
-export default function YourFoods() {
+export default function SearchIndex() {
   const items = [
     'Bread',
     'Butter',
@@ -20,15 +21,17 @@ export default function YourFoods() {
     'Peanut Butter',
     'Tomato',
     'Creamy Garlic Shrimp',
+    'Tomato Basil Soup',
+    'Chocolate Chip Cookies',
   ];
 
   return (
     <>
       <YStack ml={24} mr={24} mb={36}>
-        <Text style={styles.title}>What foods do you have at home? 🏡</Text>
+        <Text style={styles.title}>Edit your fridge</Text>
         <Text style={styles.subTitle}>
-          Select any allergies you have so that we only give you recipes that
-          are safe for you!*
+          Edit the foods you selected earlier from your fridge if needed and
+          press go!
         </Text>
       </YStack>
       <YStack f={1} ml={24} mr={24}>
@@ -39,20 +42,7 @@ export default function YourFoods() {
             initHeight="20"
             style={styles.searchIcon}
           ></ResponsiveImage>
-          <TextInput
-            style={{
-              borderColor: red1,
-              borderWidth: 1,
-              borderRadius: 16,
-              height: 58,
-              fontFamily: 'Urbanist',
-              color: 'white',
-              paddingLeft: 52,
-              paddingTop: 20,
-              paddingBottom: 18,
-              fontSize: responsiveFontSize(16),
-            }}
-          />
+          <TextInput style={styles.searchInput} />
         </View>
         <YStack f={1}>
           <Text style={styles.item}>Added Items</Text>
@@ -74,6 +64,15 @@ export default function YourFoods() {
               );
             })}
           </ScrollView>
+          <RoundedButton
+            title="Go !"
+            customStyle={{
+              backgroundColor: red1,
+              marginTop: 10,
+              marginBottom: 10,
+            }}
+            width="100%"
+          />
         </YStack>
       </YStack>
     </>
@@ -86,6 +85,18 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: responsiveFontSize(32),
     marginTop: 42,
+  },
+  searchInput: {
+    borderColor: red1,
+    borderWidth: 1,
+    borderRadius: 16,
+    height: 58,
+    fontFamily: 'Urbanist',
+    color: 'white',
+    paddingLeft: 52,
+    paddingTop: 20,
+    paddingBottom: 18,
+    fontSize: responsiveFontSize(16),
   },
   subTitle: {
     fontFamily: 'Urbanist',
