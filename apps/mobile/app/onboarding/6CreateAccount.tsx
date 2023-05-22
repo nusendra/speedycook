@@ -1,9 +1,8 @@
 import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { XStack, YStack, ZStack } from 'tamagui';
-import { StyleSheet, ScrollView, TextInput, Text } from 'react-native';
-import { useState } from 'react';
-import { red1, dark4, dark } from '../../styles/tamagui';
+import { StyleSheet, ScrollView, TextInput, Text, View } from 'react-native';
+import { red1, dark4, dark, dark2 } from '../../styles/tamagui';
 
 export default function CreateAccount() {
   return (

@@ -1,14 +1,42 @@
 import RoundedButton from '../../components/RoundedButton';
 import ResponsiveImage from 'react-native-responsive-image';
-import { Pressable, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+  View,
+  Text,
+  Animated,
+  Easing,
+} from 'react-native';
 import { XStack, YStack, ZStack } from 'tamagui';
 import { Slot, useRouter, usePathname } from 'expo-router';
-import { red1 } from '../../styles/tamagui';
+import { red1, dark2 } from '../../styles/tamagui';
+import { useState } from 'react';
+import Modal from 'react-native-modal';
+import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 
 export default function OnboardingLayout() {
   const height = Dimensions.get('window').height;
   const router = useRouter();
   const pathName = usePathname();
+  const [created, setCreated] = useState<boolean>(false);
+
+  const spinValue = new Animated.Value(0);
+  Animated.loop(
+    Animated.timing(spinValue, {
+      toValue: 1,
+      duration: 1500,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    })
+  ).start();
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
   const enum PathList {
     COOKING_LEVEL = '/onboarding/1CookingLevel',
@@ -40,16 +68,22 @@ export default function OnboardingLayout() {
   };
 
   const onSubmit = () => {
-    if (pathName === PathList.COOKING_LEVEL) {
-      router.push(PathList.YOUR_FOODS);
-    } else if (pathName === PathList.YOUR_FOODS) {
-      router.push(PathList.ALLERGIES);
-    } else if (pathName === PathList.ALLERGIES) {
-      router.push(PathList.DIETARY);
-    } else if (pathName === PathList.DIETARY) {
-      router.push(PathList.COMPLETE_PROFILE);
-    } else if (pathName === PathList.COMPLETE_PROFILE) {
-      router.push(PathList.CREATE_ACCOUNT);
+    switch (pathName) {
+      case PathList.CREATE_ACCOUNT:
+        setCreated(true);
+        break;
+      default:
+        if (pathName === PathList.COOKING_LEVEL) {
+          router.push(PathList.YOUR_FOODS);
+        } else if (pathName === PathList.YOUR_FOODS) {
+          router.push(PathList.ALLERGIES);
+        } else if (pathName === PathList.ALLERGIES) {
+          router.push(PathList.DIETARY);
+        } else if (pathName === PathList.DIETARY) {
+          router.push(PathList.COMPLETE_PROFILE);
+        } else if (pathName === PathList.COMPLETE_PROFILE) {
+          router.push(PathList.CREATE_ACCOUNT);
+        }
     }
   };
 
@@ -96,6 +130,26 @@ export default function OnboardingLayout() {
           />
         </YStack>
       </SafeAreaView>
+      <Modal isVisible={created}>
+        <View style={styles.modalContainer}>
+          <YStack flex={1} justifyContent="center" ai="center">
+            <ResponsiveImage
+              source={require('../../assets/account-created.png')}
+              initWidth="186"
+              initHeight="180"
+            />
+            <Text style={styles.successTitle}>Sign Up Successful!</Text>
+            <Text style={styles.successDescription}>
+              Your account has been created. Please wait a moment, we are
+              preparing for you...
+            </Text>
+            <Animated.Image
+              style={[styles.loading, { transform: [{ rotate: spin }] }]}
+              source={require('../../assets/progress.png')}
+            />
+          </YStack>
+        </View>
+      </Modal>
     </>
   );
 }
@@ -105,5 +159,35 @@ const styles = StyleSheet.create({
     backgroundColor: red1,
     position: 'absolute',
     bottom: 0,
+  },
+  modalContainer: {
+    justifyContent: 'center',
+    backgroundColor: dark2,
+    height: 496,
+    borderRadius: 10,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  successTitle: {
+    fontFamily: 'UrbanistBold',
+    color: red1,
+    fontSize: responsiveFontSize(24),
+    marginTop: 32,
+    marginRight: 32,
+    marginLeft: 32,
+  },
+  successDescription: {
+    fontFamily: 'Urbanist',
+    color: 'white',
+    fontSize: responsiveFontSize(16),
+    marginTop: 16,
+    marginRight: 32,
+    marginLeft: 32,
+    textAlign: 'center',
+  },
+  loading: {
+    marginTop: 32,
+    width: 60,
+    height: 60,
   },
 });

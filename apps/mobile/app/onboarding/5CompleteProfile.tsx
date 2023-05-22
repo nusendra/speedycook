@@ -21,7 +21,7 @@ export default function CompleteProfile() {
   const [genderModalOpen, setGenderModalOpen] = useState(false);
   const [gender, setGender] = useState<Gender>('');
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date | null>(null);
   const [showDatepicker, setShowDatepicker] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -117,7 +117,7 @@ export default function CompleteProfile() {
                       placeholder="MM/DD/YYYY"
                       placeholderTextColor={dark4}
                       editable={false}
-                      value={date.toLocaleDateString()}
+                      value={date ? date.toLocaleDateString() : ''}
                     />
                     <ResponsiveImage
                       source={require('../../assets/Calendar.png')}
