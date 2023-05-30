@@ -11,8 +11,11 @@ import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import ResponsiveImage from 'react-native-responsive-image';
 import { red1, dark4 } from '../../styles/tamagui';
 import RoundedButton from '../../components/RoundedButton';
+import { useRouter } from 'expo-router';
 
 export default function SearchIndex() {
+  const router = useRouter();
+
   const items = [
     'Bread',
     'Butter',
@@ -72,6 +75,7 @@ export default function SearchIndex() {
               marginBottom: 10,
             }}
             width="100%"
+            onPress={() => router.push('/search/result')}
           />
         </YStack>
       </YStack>

@@ -1,15 +1,22 @@
 import { Slot } from 'expo-router';
 import { Dimensions, Text, StyleSheet, SafeAreaView, View } from 'react-native';
+import { usePathname } from 'expo-router';
 import { XStack, YStack, ZStack } from 'tamagui';
 import ResponsiveImage from 'react-native-responsive-image';
 import { inactive, red1 } from '../../styles/tamagui';
 
 export default function SearchLayout() {
   const height = Dimensions.get('window').height;
+  const pathName = usePathname();
 
-  return (
-    <>
-      <YStack mt={55} ml={34} mr={24}>
+  const enum PathList {
+    RECIPE_FINDER = '/search',
+    RESULT = '/search/result',
+  }
+
+  const RecipeFinderHeader = () => {
+    return (
+      <>
         <XStack ai="center">
           <ResponsiveImage
             source={require('../../assets/logo.png')}
@@ -24,6 +31,38 @@ export default function SearchLayout() {
             style={{ right: 11, position: 'absolute' }}
           ></ResponsiveImage>
         </XStack>
+      </>
+    );
+  };
+
+  const NavigateBackHeader = () => {
+    return (
+      <>
+        <XStack ai="center">
+          <ResponsiveImage
+            source={require('../../assets/arrow-left.png')}
+            initWidth="19"
+            initHeight="24"
+          ></ResponsiveImage>
+          <Text style={styles.menuTitle}>Back</Text>
+        </XStack>
+      </>
+    );
+  };
+
+  const Header = () => {
+    return (
+      <>
+        {pathName === PathList.RECIPE_FINDER && <RecipeFinderHeader />}
+        {pathName === PathList.RESULT && <NavigateBackHeader />}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <YStack mt={55} ml={34} mr={24}>
+        <Header />
       </YStack>
       <SafeAreaView style={{ height: height - 40 }}>
         <Slot />
