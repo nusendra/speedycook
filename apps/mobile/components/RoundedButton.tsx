@@ -29,7 +29,7 @@ const RoundedButton: React.FC<PropsType> = ({
         style={[customStyle, styles.actionButton, { width }]}
         onPress={onPress}
       >
-        <XStack>
+        <XStack f={1} jc="center" ai="center">
           <Stack>{children}</Stack>
           <Text style={styles.buttonText}>{title}</Text>
         </XStack>

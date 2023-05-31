@@ -10,8 +10,6 @@ export default function Welcome() {
   const router = useRouter();
 
   const sign = (type: string) => {
-    console.log(type);
-
     router.push('/onboarding/1CookingLevel');
   };
 
