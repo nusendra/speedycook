@@ -5,13 +5,34 @@ import { ZStack, Stack, Separator, YStack } from 'tamagui';
 import { dark2, dark4, red1 } from '../styles/tamagui';
 import RoundedButton from '../components/RoundedButton';
 import { useRouter } from 'expo-router';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, EXPO_CLIENT_ID } from '@env';
+
+import { useEffect } from 'react';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Welcome() {
   const router = useRouter();
 
+  const [request, response, prompAsync] = Google.useAuthRequest({
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    expoClientId: EXPO_CLIENT_ID,
+  });
+
   const sign = (type: string) => {
-    router.push('/onboarding/1CookingLevel');
+    prompAsync();
+    // router.push('/onboarding/1CookingLevel');
   };
+
+  useEffect(() => {
+    console.log(response);
+    if (response?.type === 'success') {
+      console.log('nice');
+    }
+  }, [response]);
 
   return (
     <>

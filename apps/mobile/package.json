@@ -8,7 +8,22 @@
     "react-native": "*",
     "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*"
+    "react-native-web": "*",
+    "expo-dev-client": "~2.2.1",
+    "expo-router": "*",
+    "expo-status-bar": "*",
+    "tamagui": "*",
+    "react-native-responsive-image": "*",
+    "expo-auth-session": "*",
+    "react": "*",
+    "react-native-modal": "*",
+    "@react-native-community/datetimepicker": "*",
+    "expo-linear-gradient": "*",
+    "expo-font": "*",
+    "@nx/expo": "*",
+    "@expo/metro-config": "*",
+    "@tamagui/animations-react-native": "*",
+    "@tamagui/font-inter": "*"
   },
   "scripts": {
     "postinstall": "rm -r node_modules && cd ../../ && yarn install && npx nx sync-deps mobile && npx nx ensure-symlink mobile"

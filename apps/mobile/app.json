@@ -1,7 +1,7 @@
 {
   "expo": {
-    "scheme": "Mobile",
-    "name": "Mobile",
+    "scheme": "com.speedycook.speedycook",
+    "name": "Speedycook",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,18 +16,25 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.speedycook.speedycook"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.speedycook.speedycook"
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "userInterfaceStyle": "automatic"
+    "userInterfaceStyle": "automatic",
+    "extra": {
+      "eas": {
+        "projectId": "00012137-6e86-4b13-8316-aa9c6eeab77c"
+      }
+    }
   }
 }
