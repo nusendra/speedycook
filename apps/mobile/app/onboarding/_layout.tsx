@@ -16,11 +16,14 @@ import { red1, dark2 } from '../../styles/tamagui';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
+import { useOnboardingStore } from '../../stores/OnboardingStore';
 
 export default function OnboardingLayout() {
   const height = Dimensions.get('window').height;
   const router = useRouter();
   const pathName = usePathname();
+  const cookingLevel = useOnboardingStore((state) => state.cookingLevel);
+
   const [created, setCreated] = useState<boolean>(false);
 
   const spinValue = new Animated.Value(0);
@@ -76,18 +79,24 @@ export default function OnboardingLayout() {
           router.push('/search');
         }, 3000);
         break;
-      default:
-        if (pathName === PathList.COOKING_LEVEL) {
+      case PathList.COOKING_LEVEL:
+        if (cookingLevel) {
           router.push(PathList.YOUR_FOODS);
-        } else if (pathName === PathList.YOUR_FOODS) {
-          router.push(PathList.ALLERGIES);
-        } else if (pathName === PathList.ALLERGIES) {
-          router.push(PathList.DIETARY);
-        } else if (pathName === PathList.DIETARY) {
-          router.push(PathList.COMPLETE_PROFILE);
-        } else if (pathName === PathList.COMPLETE_PROFILE) {
-          router.push(PathList.CREATE_ACCOUNT);
         }
+        break;
+      case PathList.YOUR_FOODS:
+        router.push(PathList.ALLERGIES);
+        break;
+      case PathList.ALLERGIES:
+        router.push(PathList.DIETARY);
+        break;
+      case PathList.DIETARY:
+        router.push(PathList.COMPLETE_PROFILE);
+        break;
+      case PathList.COMPLETE_PROFILE:
+        router.push(PathList.CREATE_ACCOUNT);
+        break;
+      default:
     }
   };
 

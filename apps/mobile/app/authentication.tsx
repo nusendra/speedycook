@@ -8,10 +8,11 @@ import { useRouter } from 'expo-router';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, EXPO_CLIENT_ID } from '@env';
-
 import { useEffect } from 'react';
 
 WebBrowser.maybeCompleteAuthSession();
+
+type SignType = 'google' | 'getStarted' | 'haveAccount';
 
 export default function Welcome() {
   const router = useRouter();
@@ -22,9 +23,14 @@ export default function Welcome() {
     expoClientId: EXPO_CLIENT_ID,
   });
 
-  const sign = (type: string) => {
-    prompAsync();
-    // router.push('/onboarding/1CookingLevel');
+  const sign = (type: SignType) => {
+    switch (type) {
+      case 'google':
+        prompAsync();
+        break;
+      default:
+        router.push('/onboarding/1CookingLevel');
+    }
   };
 
   useEffect(() => {
@@ -79,12 +85,12 @@ export default function Welcome() {
           <RoundedButton
             title="Get Started"
             customStyle={styles.getStartedButton}
-            onPress={() => sign('get_started')}
+            onPress={() => sign('getStarted')}
           />
           <RoundedButton
             title="I Already Have an Account"
             customStyle={styles.haveAccountButton}
-            onPress={() => sign('sign_in')}
+            onPress={() => sign('haveAccount')}
           />
         </YStack>
       </Stack>

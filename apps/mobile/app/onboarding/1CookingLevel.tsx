@@ -1,9 +1,40 @@
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
-import { Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { YStack, ScrollView } from 'tamagui';
-import { dark2, dark4, dark } from '../../styles/tamagui';
+import { dark2, dark4, dark, red1 } from '../../styles/tamagui';
+import {
+  useOnboardingStore,
+  CookingLevel as CookingLevelType,
+} from '../../stores/OnboardingStore';
+import { useEffect, useState } from 'react';
 
 export default function CookingLevel() {
+  const cookingLevel = useOnboardingStore((state) => state.cookingLevel);
+  const setCookingLevelStore = useOnboardingStore(
+    (state) => state.setCookingLevel
+  );
+  const [selectedLevel, setSelectedLevel] = useState<CookingLevelType>(null);
+
+  const setCookingLevel = (level: CookingLevelType) => {
+    setCookingLevelStore(level);
+    setSelectedLevel(level);
+  };
+
+  const selectedStyle = (level: CookingLevelType) => {
+    if (selectedLevel === level) {
+      return {
+        borderColor: red1,
+      };
+    }
+    return '';
+  };
+
+  useEffect(() => {
+    if (cookingLevel) {
+      setSelectedLevel(cookingLevel);
+    }
+  }, []);
+
   return (
     <>
       <YStack ml={24} mr={24} mb={36}>
@@ -14,14 +45,26 @@ export default function CookingLevel() {
       </YStack>
       <YStack f={1} ml={24} mr={24}>
         <ScrollView width="100%" backgroundColor={dark}>
-          <Pressable style={[styles.selectOption]}>
+          <TouchableOpacity
+            style={[styles.selectOption, selectedStyle('novice')]}
+            onPress={() => setCookingLevel('novice')}
+          >
             <Text style={styles.optionTitle}>Novice</Text>
             <Text style={styles.optionDescription}>
               Basic understanding of kitchen tools and basic cooking techniques
               such as boiling and frying.
             </Text>
-          </Pressable>
-          <TouchableOpacity style={[styles.selectOption, { marginTop: 16 }]}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.selectOption,
+              selectedStyle('intermediate'),
+              {
+                marginTop: 16,
+              },
+            ]}
+            onPress={() => setCookingLevel('intermediate')}
+          >
             <Text style={styles.optionTitle}>Intermediate</Text>
             <Text style={styles.optionDescription}>
               Ability to follow recipes, prepare simple dishes, and basic knife
@@ -29,7 +72,12 @@ export default function CookingLevel() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.selectOption, { marginTop: 16, height: 146 }]}
+            style={[
+              styles.selectOption,
+              selectedStyle('advanced'),
+              { marginTop: 16, height: 146 },
+            ]}
+            onPress={() => setCookingLevel('advanced')}
           >
             <Text style={styles.optionTitle}>Advanced</Text>
             <Text style={styles.optionDescription}>
@@ -39,13 +87,18 @@ export default function CookingLevel() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.selectOption, { marginTop: 16, height: 146 }]}
+            style={[
+              styles.selectOption,
+              selectedStyle('professional'),
+              { marginTop: 16, height: 146 },
+            ]}
+            onPress={() => setCookingLevel('professional')}
           >
-            <Text style={styles.optionTitle}>Advanced</Text>
+            <Text style={styles.optionTitle}>Professional</Text>
             <Text style={styles.optionDescription}>
-              Understanding of cooking principles, create recipes, & proficiency
-              in various cooking techniques such as baking, grilling, &
-              roasting.
+              Extensive knowledge of cooking techniques and ingredients, ability
+              to work in a fast-paced environment, and experience in a
+              professional kitchen setting.
             </Text>
           </TouchableOpacity>
         </ScrollView>

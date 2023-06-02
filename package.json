@@ -42,7 +42,8 @@
     "react-native-svg-transformer": "1.0.0",
     "react-native-web": "~0.18.10",
     "tamagui": "^1.22.12",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@expo/cli": "~0.7.0",
