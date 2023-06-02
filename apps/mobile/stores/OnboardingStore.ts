@@ -13,6 +13,9 @@ export interface OnboardingState {
   foods: string[];
   addFood: (food: string) => void;
   removeFood: (index: number) => void;
+  allergies: string[];
+  addAllergy: (allergy: string) => void;
+  removeAllergy: (allergy: string) => void;
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
@@ -24,5 +27,12 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
   removeFood: (index: number) =>
     set((state) => ({
       foods: state.foods.filter((_, index_) => index_ !== index),
+    })),
+  allergies: [],
+  addAllergy: (allergy: string) =>
+    set((state) => ({ allergies: [...state.allergies, allergy] })),
+  removeAllergy: (allergy: string) =>
+    set((state) => ({
+      allergies: state.allergies.filter((alrgy) => alrgy !== allergy),
     })),
 }));

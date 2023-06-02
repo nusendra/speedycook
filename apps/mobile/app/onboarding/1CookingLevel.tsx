@@ -6,34 +6,25 @@ import {
   useOnboardingStore,
   CookingLevel as CookingLevelType,
 } from '../../stores/OnboardingStore';
-import { useEffect, useState } from 'react';
 
 export default function CookingLevel() {
   const cookingLevel = useOnboardingStore((state) => state.cookingLevel);
   const setCookingLevelStore = useOnboardingStore(
     (state) => state.setCookingLevel
   );
-  const [selectedLevel, setSelectedLevel] = useState<CookingLevelType>(null);
 
   const setCookingLevel = (level: CookingLevelType) => {
     setCookingLevelStore(level);
-    setSelectedLevel(level);
   };
 
   const selectedStyle = (level: CookingLevelType) => {
-    if (selectedLevel === level) {
+    if (cookingLevel === level) {
       return {
         borderColor: red1,
       };
     }
     return '';
   };
-
-  useEffect(() => {
-    if (cookingLevel) {
-      setSelectedLevel(cookingLevel);
-    }
-  }, []);
 
   return (
     <>

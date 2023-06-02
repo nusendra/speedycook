@@ -1,9 +1,11 @@
 import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
-import { XStack, YStack, Separator } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native';
-import { dark2, dark4 } from '../../styles/tamagui';
+import { dark2, dark4, red1 } from '../../styles/tamagui';
+import { useOnboardingStore } from '../../stores/OnboardingStore';
+import { shallow } from 'zustand/shallow';
 
 export default function Allergies() {
   const allergiesOption = [
@@ -29,6 +31,34 @@ export default function Allergies() {
     ],
   ];
 
+  const { allergies, addAllergy, removeAllergy } = useOnboardingStore(
+    (state) => ({
+      allergies: state.allergies,
+      addAllergy: state.addAllergy,
+      removeAllergy: state.removeAllergy,
+    }),
+    shallow
+  );
+
+  const selectAllergy = (allergy: string) => {
+    const found = allergies.find((item) => item === allergy);
+
+    if (found) {
+      removeAllergy(allergy);
+    } else {
+      addAllergy(allergy);
+    }
+  };
+
+  const selectedStyle = (allergy: string) => {
+    if (allergies.find((item) => item === allergy)) {
+      return {
+        borderColor: red1,
+      };
+    }
+    return '';
+  };
+
   return (
     <>
       <YStack ml={24} mr={24} mb={36}>
@@ -45,7 +75,11 @@ export default function Allergies() {
               <XStack jc="space-between">
                 {allergy.map((item, index) => {
                   return (
-                    <TouchableOpacity style={styles.cardOptions} key={index}>
+                    <TouchableOpacity
+                      style={[styles.cardOptions, selectedStyle(item.title)]}
+                      key={index}
+                      onPress={() => selectAllergy(item.title)}
+                    >
                       <XStack f={1} ai="center">
                         <ResponsiveImage
                           source={item.image}
