@@ -3,7 +3,9 @@ import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { XStack, YStack } from 'tamagui';
 import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native';
-import { dark2, dark4 } from '../../styles/tamagui';
+import { dark2, dark4, red1 } from '../../styles/tamagui';
+import { useOnboardingStore } from '../../stores/OnboardingStore';
+import { shallow } from 'zustand/shallow';
 
 export default function Allergies() {
   const allergiesOption = [
@@ -59,6 +61,34 @@ export default function Allergies() {
     ],
   ];
 
+  const { dietaries, addDietary, removeDietary } = useOnboardingStore(
+    (state) => ({
+      dietaries: state.dietaries,
+      addDietary: state.addDietary,
+      removeDietary: state.removeDietary,
+    }),
+    shallow
+  );
+
+  const selectDietary = (dietary: string) => {
+    const found = dietaries.find((item) => item === dietary);
+
+    if (found) {
+      removeDietary(dietary);
+    } else {
+      addDietary(dietary);
+    }
+  };
+
+  const selectedStyle = (dietary: string) => {
+    if (dietaries.find((item) => item === dietary)) {
+      return {
+        borderColor: red1,
+      };
+    }
+    return '';
+  };
+
   return (
     <>
       <YStack ml={24} mr={24} mb={36}>
@@ -78,7 +108,11 @@ export default function Allergies() {
                 <XStack jc="space-between">
                   {allergy.map((item, index) => {
                     return (
-                      <TouchableOpacity style={styles.cardOptions} key={index}>
+                      <TouchableOpacity
+                        style={[styles.cardOptions, selectedStyle(item.title)]}
+                        key={index}
+                        onPress={() => selectDietary(item.title)}
+                      >
                         <XStack f={1} ai="center">
                           <ResponsiveImage
                             source={item.image}

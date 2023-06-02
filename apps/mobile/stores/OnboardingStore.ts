@@ -16,6 +16,9 @@ export interface OnboardingState {
   allergies: string[];
   addAllergy: (allergy: string) => void;
   removeAllergy: (allergy: string) => void;
+  dietaries: string[];
+  addDietary: (dietary: string) => void;
+  removeDietary: (dietary: string) => void;
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
@@ -34,5 +37,12 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
   removeAllergy: (allergy: string) =>
     set((state) => ({
       allergies: state.allergies.filter((alrgy) => alrgy !== allergy),
+    })),
+  dietaries: [],
+  addDietary: (dietary: string) =>
+    set((state) => ({ dietaries: [...state.dietaries, dietary] })),
+  removeDietary: (dietary: string) =>
+    set((state) => ({
+      allergies: state.dietaries.filter((diet) => diet !== dietary),
     })),
 }));
