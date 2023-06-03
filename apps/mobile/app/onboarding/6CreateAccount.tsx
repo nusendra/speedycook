@@ -1,10 +1,35 @@
 import ResponsiveImage from 'react-native-responsive-image';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { XStack, YStack, ZStack } from 'tamagui';
-import { StyleSheet, ScrollView, TextInput, Text, View } from 'react-native';
-import { red1, dark4, dark, dark2 } from '../../styles/tamagui';
+import { StyleSheet, ScrollView, TextInput, Text } from 'react-native';
+import { red1, dark4 } from '../../styles/tamagui';
+import { useOnboardingStore } from '../../stores/OnboardingStore';
+import { shallow } from 'zustand/shallow';
 
 export default function CreateAccount() {
+  const {
+    username,
+    setUsername,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+  } = useOnboardingStore(
+    (state) => ({
+      username: state.username,
+      setUsername: state.setUsername,
+      email: state.email,
+      setEmail: state.setEmail,
+      password: state.password,
+      setPassword: state.setPassword,
+      confirmPassword: state.confirmPassword,
+      setConfirmPassword: state.setConfirmPassword,
+    }),
+    shallow
+  );
+
   return (
     <>
       <YStack ml={24} mr={24}>
@@ -24,6 +49,8 @@ export default function CreateAccount() {
                   style={[styles.formInput, styles.formInputContainer]}
                   placeholder="Username"
                   placeholderTextColor={dark4}
+                  onChangeText={(text) => setUsername(text)}
+                  value={username}
                 />
               </YStack>
               <YStack mt={24}>
@@ -32,6 +59,8 @@ export default function CreateAccount() {
                   style={[styles.formInput, styles.formInputContainer]}
                   placeholder="Email"
                   placeholderTextColor={dark4}
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
                 />
               </YStack>
               <YStack mt={24}>
@@ -41,6 +70,8 @@ export default function CreateAccount() {
                     style={[styles.formInput, styles.formInputContainer]}
                     placeholder="Password"
                     placeholderTextColor={dark4}
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
                   />
                   <ResponsiveImage
                     source={require('../../assets/closed-eye.png')}
@@ -61,6 +92,8 @@ export default function CreateAccount() {
                     style={[styles.formInput, styles.formInputContainer]}
                     placeholder="Confirm Password"
                     placeholderTextColor={dark4}
+                    onChangeText={(text) => setConfirmPassword(text)}
+                    value={confirmPassword}
                   />
                   <ResponsiveImage
                     source={require('../../assets/closed-eye.png')}

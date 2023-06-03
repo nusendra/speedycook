@@ -1,4 +1,3 @@
-import { setUncaughtExceptionCaptureCallback } from 'process';
 import { create } from 'zustand';
 
 export type CookingLevel =
@@ -29,6 +28,14 @@ export interface OnboardingState {
   setGender: (gender: string) => void;
   dob: Date;
   setDob: (dob: Date) => void;
+  username: string;
+  setUsername: (username: string) => void;
+  email: string;
+  setEmail: (email: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  confirmPassword: string;
+  setConfirmPassword: (password: string) => void;
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
@@ -55,6 +62,7 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
     set((state) => ({
       allergies: state.dietaries.filter((diet) => diet !== dietary),
     })),
+
   fullName: '',
   setFullName: (name: string) => set({ fullName: name }),
   phoneNumber: '',
@@ -63,4 +71,13 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
   setGender: (gender: string) => set({ gender }),
   dob: new Date(),
   setDob: (dob: Date) => set({ dob }),
+
+  username: '',
+  setUsername: (username: string) => set({ username }),
+  email: '',
+  setEmail: (email: string) => set({ email }),
+  password: '',
+  setPassword: (password: string) => set({ password }),
+  confirmPassword: '',
+  setConfirmPassword: (password: string) => set({ confirmPassword: password }),
 }));
