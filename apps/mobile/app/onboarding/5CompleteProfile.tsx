@@ -14,20 +14,41 @@ import { useState } from 'react';
 import { red1, dark4, dark } from '../../styles/tamagui';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
+import { useOnboardingStore } from '../../stores/OnboardingStore';
+import { shallow } from 'zustand/shallow';
 
-type Gender = 'Male' | 'Female' | '';
+type Gender = 'male' | 'female' | '';
 
 export default function CompleteProfile() {
+  const {
+    fullName,
+    setFullName,
+    phoneNumber,
+    setPhoneNumber,
+    gender,
+    setGender,
+    dob,
+    setDob,
+  } = useOnboardingStore(
+    (state) => ({
+      fullName: state.fullName,
+      setFullName: state.setFullName,
+      phoneNumber: state.phoneNumber,
+      setPhoneNumber: state.setPhoneNumber,
+      gender: state.gender,
+      setGender: state.setGender,
+      dob: state.dob,
+      setDob: state.setDob,
+    }),
+    shallow
+  );
   const [genderModalOpen, setGenderModalOpen] = useState(false);
-  const [gender, setGender] = useState<Gender>('');
-
-  const [date, setDate] = useState<Date | null>(null);
   const [showDatepicker, setShowDatepicker] = useState(false);
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShowDatepicker(false);
-    setDate(currentDate);
+    setDob(currentDate);
   };
 
   const changeGender = (gender: Gender) => {
@@ -68,6 +89,8 @@ export default function CompleteProfile() {
                   style={[styles.formInput, styles.formInputContainer]}
                   placeholder="Full Name"
                   placeholderTextColor={dark4}
+                  onChangeText={(text) => setFullName(text)}
+                  value={fullName}
                 />
               </YStack>
               <YStack mt={24}>
@@ -76,6 +99,8 @@ export default function CompleteProfile() {
                   style={[styles.formInput, styles.formInputContainer]}
                   placeholder="+1 000 000 000"
                   placeholderTextColor={dark4}
+                  onChangeText={(text) => setPhoneNumber(text)}
+                  value={phoneNumber}
                 />
               </YStack>
               <YStack mt={24}>
@@ -90,7 +115,7 @@ export default function CompleteProfile() {
                       placeholder="Gender"
                       placeholderTextColor={dark4}
                       editable={false}
-                      value={gender}
+                      value={gender?.toUpperCase()}
                     />
                   </TouchableOpacity>
                   <ResponsiveImage
@@ -117,7 +142,7 @@ export default function CompleteProfile() {
                       placeholder="MM/DD/YYYY"
                       placeholderTextColor={dark4}
                       editable={false}
-                      value={date ? date.toLocaleDateString() : ''}
+                      value={dob ? dob.toLocaleDateString() : ''}
                     />
                     <ResponsiveImage
                       source={require('../../assets/Calendar.png')}
@@ -141,13 +166,13 @@ export default function CompleteProfile() {
           <XStack flex={1} flexDirection="row" justifyContent="space-between">
             <TouchableOpacity
               style={styles.selectItem}
-              onPress={() => changeGender('Male')}
+              onPress={() => changeGender('male')}
             >
               <Text style={styles.selectText}>MALE</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.selectItem}
-              onPress={() => changeGender('Female')}
+              onPress={() => changeGender('female')}
             >
               <Text style={styles.selectText}>FEMALE</Text>
             </TouchableOpacity>
@@ -157,7 +182,7 @@ export default function CompleteProfile() {
       {showDatepicker && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={date}
+          value={dob}
           display="calendar"
           onChange={onChange}
         />
