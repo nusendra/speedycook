@@ -17,12 +17,43 @@ import { useState } from 'react';
 import Modal from 'react-native-modal';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { useOnboardingStore } from '../../stores/OnboardingStore';
+import { db } from '../../firebaseConfig';
+import { collection, addDoc } from 'firebase/firestore';
+import { shallow } from 'zustand/shallow';
 
 export default function OnboardingLayout() {
   const height = Dimensions.get('window').height;
   const router = useRouter();
   const pathName = usePathname();
-  const cookingLevel = useOnboardingStore((state) => state.cookingLevel);
+
+  const {
+    cookingLevel,
+    foods,
+    allergies,
+    dietaries,
+    fullName,
+    phoneNumber,
+    gender,
+    dob,
+    username,
+    email,
+    password,
+  } = useOnboardingStore(
+    (state) => ({
+      cookingLevel: state.cookingLevel,
+      foods: state.foods,
+      allergies: state.allergies,
+      dietaries: state.dietaries,
+      fullName: state.fullName,
+      phoneNumber: state.phoneNumber,
+      gender: state.gender,
+      dob: state.dob,
+      username: state.username,
+      email: state.email,
+      password: state.password,
+    }),
+    shallow
+  );
 
   const [created, setCreated] = useState<boolean>(false);
 
@@ -70,15 +101,8 @@ export default function OnboardingLayout() {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     switch (pathName) {
-      case PathList.CREATE_ACCOUNT:
-        setCreated(true);
-
-        setTimeout(() => {
-          router.push('/search');
-        }, 3000);
-        break;
       case PathList.COOKING_LEVEL:
         if (cookingLevel) {
           router.push(PathList.YOUR_FOODS);
@@ -95,6 +119,35 @@ export default function OnboardingLayout() {
         break;
       case PathList.COMPLETE_PROFILE:
         router.push(PathList.CREATE_ACCOUNT);
+        break;
+      case PathList.CREATE_ACCOUNT:
+        const colRef = collection(db, 'users');
+        const data = {
+          cookingLevel,
+          foods,
+          allergies,
+          dietaries,
+          fullName,
+          phoneNumber,
+          gender,
+          dob,
+          username,
+          email,
+          password,
+        };
+
+        try {
+          await addDoc(colRef, data);
+          setCreated(true);
+
+          setTimeout(() => {
+            router.push('/search');
+          }, 3000);
+        } catch (err) {
+          console.log('failed to save');
+          console.log(err);
+        }
+
         break;
       default:
     }
