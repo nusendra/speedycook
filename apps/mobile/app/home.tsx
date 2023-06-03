@@ -28,6 +28,10 @@ export default function Welcome() {
       case 'google':
         prompAsync();
         break;
+      case 'haveAccount':
+        router.push('/auth/login');
+        break;
+
       default:
         router.push('/onboarding/1CookingLevel');
     }
