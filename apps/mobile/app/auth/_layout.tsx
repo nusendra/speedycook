@@ -1,24 +1,21 @@
 import RoundedButton from '../../components/RoundedButton';
 import ResponsiveImage from 'react-native-responsive-image';
-import {
-  Pressable,
-  StyleSheet,
-  SafeAreaView,
-  Dimensions,
-  View,
-  Text,
-  Animated,
-  Easing,
-} from 'react-native';
+import { Pressable, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { XStack, YStack, ZStack } from 'tamagui';
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { red1, dark2 } from '../../styles/tamagui';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
+import { useEffect, useState } from 'react';
+import { useAuthStore } from '../../stores/AuthStore';
+import { signIn } from '../../apis';
 
 export default function AuthLayout() {
   const height = Dimensions.get('window').height;
   const router = useRouter();
   const pathName = usePathname();
+  const [submitText, setSubmitText] = useState<string>('Continue');
+  const email = useAuthStore((state) => state.email);
+  const password = useAuthStore((state) => state.password);
 
   const enum PathList {
     LOGIN = '/auth/login',
@@ -29,8 +26,16 @@ export default function AuthLayout() {
   };
 
   const onSubmit = async () => {
-    console.log('submit');
+    if (pathName === PathList.LOGIN) {
+      signIn(email, password);
+    }
   };
+
+  useEffect(() => {
+    if (pathName === PathList.LOGIN) {
+      setSubmitText('Sign In');
+    }
+  }, [pathName]);
 
   return (
     <>
@@ -61,7 +66,7 @@ export default function AuthLayout() {
         <Slot />
         <YStack f={0.15} jc="flex-end" mb={36} ml={24} mr={24} mt={24}>
           <RoundedButton
-            title="Continue"
+            title={submitText}
             customStyle={[styles.continueButton]}
             width="100%"
             onPress={onSubmit}

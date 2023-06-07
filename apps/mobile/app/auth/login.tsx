@@ -4,10 +4,19 @@ import { XStack, YStack, ZStack } from 'tamagui';
 import { StyleSheet, ScrollView, TextInput, Text } from 'react-native';
 import { red1, dark4 } from '../../styles/tamagui';
 import { useState } from 'react';
+import { useAuthStore } from '../../stores/AuthStore';
+import { shallow } from 'zustand/shallow';
 
 export default function Login() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const { email, setEmail, password, setPassword } = useAuthStore(
+    (state) => ({
+      email: state.email,
+      setEmail: state.setEmail,
+      password: state.password,
+      setPassword: state.setPassword,
+    }),
+    shallow
+  );
 
   return (
     <>
