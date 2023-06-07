@@ -7,7 +7,8 @@ import { red1, dark2 } from '../../styles/tamagui';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../stores/AuthStore';
-import { signIn } from '../../apis';
+import { signIn, userSignOut } from '../../apis';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AuthLayout() {
   const height = Dimensions.get('window').height;
@@ -27,7 +28,18 @@ export default function AuthLayout() {
 
   const onSubmit = async () => {
     if (pathName === PathList.LOGIN) {
+      // const a = await AsyncStorage.getAllKeys();
+      // console.log(a.find((item) => item.includes('authUser')));
+      // const b = await AsyncStorage.getItem(
+      //   'firebase:authUser:AIzaSyD1IpBOBgAuXIJOBnCZ4DUWPpbXec_-SSs:[DEFAULT]'
+      // );
+      // console.log(a);
+      // console.log(b);
       signIn(email, password);
+
+      router.replace('/search');
+
+      // userSignOut();
     }
   };
 

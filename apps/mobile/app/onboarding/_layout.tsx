@@ -22,6 +22,15 @@ import { collection, addDoc } from 'firebase/firestore';
 import { shallow } from 'zustand/shallow';
 import { signUp } from '../../apis';
 
+export const enum PathList {
+  COOKING_LEVEL = '/onboarding/1CookingLevel',
+  YOUR_FOODS = '/onboarding/2YourFoods',
+  ALLERGIES = '/onboarding/3Allergies',
+  DIETARY = '/onboarding/4Dietary',
+  COMPLETE_PROFILE = '/onboarding/5CompleteProfile',
+  CREATE_ACCOUNT = '/onboarding/6CreateAccount',
+}
+
 export default function OnboardingLayout() {
   const height = Dimensions.get('window').height;
   const router = useRouter();
@@ -72,15 +81,6 @@ export default function OnboardingLayout() {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
-
-  const enum PathList {
-    COOKING_LEVEL = '/onboarding/1CookingLevel',
-    YOUR_FOODS = '/onboarding/2YourFoods',
-    ALLERGIES = '/onboarding/3Allergies',
-    DIETARY = '/onboarding/4Dietary',
-    COMPLETE_PROFILE = '/onboarding/5CompleteProfile',
-    CREATE_ACCOUNT = '/onboarding/6CreateAccount',
-  }
 
   const goBack = () => {
     router.back();
