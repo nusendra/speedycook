@@ -12,21 +12,34 @@ import ResponsiveImage from 'react-native-responsive-image';
 import { red1, dark4 } from '../../styles/tamagui';
 import RoundedButton from '../../components/RoundedButton';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { db } from '../../firebaseConfig';
+import { doc, getDoc } from '@firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SearchIndex() {
   const router = useRouter();
+  const [items, setItems] = useState<string[]>([]);
 
-  const items = [
-    'Bread',
-    'Butter',
-    'Cheese Permesan',
-    'Toast',
-    'Peanut Butter',
-    'Tomato',
-    'Creamy Garlic Shrimp',
-    'Tomato Basil Soup',
-    'Chocolate Chip Cookies',
-  ];
+  const getData = async () => {
+    const allKeys = await AsyncStorage.getAllKeys();
+    const found = allKeys.find((item) => item.includes('authUser'));
+
+    let userData = await AsyncStorage.getItem(found as string);
+    userData = JSON.parse(userData as string);
+
+    // @ts-ignore
+    const docRef = doc(db, 'users', userData.uid);
+    const docSnap = await getDoc(docRef);
+    const userDoc = docSnap.data();
+
+    // @ts-ignore
+    setItems(userDoc.foods);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>
