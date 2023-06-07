@@ -18,7 +18,7 @@ import Modal from 'react-native-modal';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { useOnboardingStore } from '../../stores/OnboardingStore';
 import { db } from '../../firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import { shallow } from 'zustand/shallow';
 import { signUp } from '../../apis';
 
@@ -123,13 +123,10 @@ export default function OnboardingLayout() {
         break;
       case PathList.CREATE_ACCOUNT:
         const userCredential: any = await signUp(email, password);
-        const {
-          createdAt,
-          email: userEmail,
-          emailVerified,
-        } = userCredential.user;
+        const { email: userEmail, emailVerified, uid } = userCredential.user;
 
-        const colRef = collection(db, 'users');
+        const docRef = doc(db, 'users', uid);
+
         const data = {
           cookingLevel,
           foods,
@@ -147,7 +144,7 @@ export default function OnboardingLayout() {
         };
 
         try {
-          await addDoc(colRef, data);
+          await setDoc(docRef, data);
           setCreated(true);
 
           setTimeout(() => {
