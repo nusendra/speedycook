@@ -10,6 +10,7 @@ app.get('/api/foods-by-ingredients', async (req: any, res) => {
   const ingredients = req.query.ingredients;
   const allergies = req.query.allergies;
   const dietaries = req.query.dietaries;
+  const cookingLevel = req.query.cookingLevel;
 
   const completion = await OpenAI.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -20,6 +21,7 @@ app.get('/api/foods-by-ingredients', async (req: any, res) => {
           - ingredients = ${ingredients}}
           - allergies = ${allergies}
           - dietaries = ${dietaries}
+          - cooking level = ${cookingLevel}
 
         And return it with this json format {ingredients: '', foodName: ''}`,
       },
