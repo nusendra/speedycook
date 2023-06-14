@@ -4,6 +4,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import { API_URL } from '@env';
 
 export const signUp = async (email: string, password: string) => {
   try {
@@ -30,4 +31,21 @@ export const userSignOut = async () => {
   } catch (err: any) {
     console.log(err.message);
   }
+};
+
+export type GenerateFoodsType = {
+  cookingLevel?: string;
+  foods?: string[];
+  dietaries?: string[];
+  allergies?: string[];
+};
+
+export const generateFoods = async (params: GenerateFoodsType) => {
+  const { cookingLevel, foods, dietaries, allergies } = params;
+
+  const result = await fetch(
+    `${API_URL}/foods-by-ingredients?cookingLevel=${cookingLevel}&ingredients=${foods?.toString()}&dietaries=${dietaries?.toString()}&allergies=${allergies?.toString()}`
+  );
+  const json = result.json();
+  return json;
 };

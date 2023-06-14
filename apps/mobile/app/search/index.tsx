@@ -19,7 +19,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SearchIndex() {
   const router = useRouter();
-  const [items, setItems] = useState<string[]>([]);
+  const [cookingLevel, setCookingLevel] = useState<string>('');
+  const [foods, setFoods] = useState<string[]>([]);
+  const [dietaries, setDietaries] = useState<string[]>([]);
+  const [allergies, setAllergies] = useState<string[]>([]);
 
   const getData = async () => {
     const allKeys = await AsyncStorage.getAllKeys();
@@ -34,7 +37,13 @@ export default function SearchIndex() {
     const userDoc = docSnap.data();
 
     // @ts-ignore
-    setItems(userDoc.foods);
+    setFoods(userDoc.foods);
+    // @ts-ignore
+    setCookingLevel(userDoc.cookingLevel);
+    // @ts-ignore
+    setDietaries(userDoc.dietaries);
+    // @ts-ignore
+    setAllergies(userDoc.allergies);
   };
 
   useEffect(() => {
@@ -64,7 +73,7 @@ export default function SearchIndex() {
           <Text style={styles.item}>Added Items</Text>
           <Separator borderColor={dark4} mt={24} />
           <ScrollView>
-            {items.map((item, index) => {
+            {foods.map((item, index) => {
               return (
                 <XStack jc="space-between" key={index}>
                   <Text style={styles.item}>{item}</Text>
@@ -88,7 +97,12 @@ export default function SearchIndex() {
               marginBottom: 10,
             }}
             width="100%"
-            onPress={() => router.push('/search/result')}
+            onPress={() =>
+              router.push({
+                pathname: '/search/result',
+                params: { cookingLevel, foods, dietaries, allergies },
+              })
+            }
           />
         </YStack>
       </YStack>

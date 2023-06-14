@@ -2,8 +2,23 @@ import { ScrollView } from 'react-native';
 import ResponsiveImage from 'react-native-responsive-image';
 import { XStack, YStack } from 'tamagui';
 import DishCard from '../../components/DishCard';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
+import { GenerateFoodsType, generateFoods } from '../../apis';
 
 export default function Result() {
+  const params = useLocalSearchParams<GenerateFoodsType>();
+
+  const getFoods = async () => {
+    const result = await generateFoods(params);
+    console.log(result);
+  };
+
+  useEffect(() => {
+    console.log(params);
+    getFoods();
+  }, []);
+
   return (
     <>
       <YStack ml={24} mr={24} ai="center">

@@ -6,11 +6,17 @@ dotenv.config();
 
 const app = express();
 
+app.get('/api', (req: any, res) => {
+  res.send('welcome to speedycook');
+});
+
 app.get('/api/foods-by-ingredients', async (req: any, res) => {
   const ingredients = req.query.ingredients;
   const allergies = req.query.allergies;
   const dietaries = req.query.dietaries;
   const cookingLevel = req.query.cookingLevel;
+
+  console.log(req.query);
 
   const completion = await OpenAI.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -23,14 +29,17 @@ app.get('/api/foods-by-ingredients', async (req: any, res) => {
           - dietaries = ${dietaries}
           - cooking level = ${cookingLevel}
 
-        And return it with this json format {ingredients: '', foodName: ''}`,
+        And only return it with this valid json format [{ingredients: '', foodName: ''}].`,
       },
     ],
   });
 
-  console.log(completion.data.choices[0].message.content);
-
-  res.send({ message: JSON.parse(completion.data.choices[0].message.content) });
+  try {
+    const data = JSON.parse(completion.data.choices[0].message.content);
+    res.send({ data });
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 app.get(`/api/recipes`, async (req: any, res) => {
