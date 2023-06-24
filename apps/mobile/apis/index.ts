@@ -43,9 +43,11 @@ export type GenerateFoodsType = {
 export const generateFoods = async (params: GenerateFoodsType) => {
   const { cookingLevel, foods, dietaries, allergies } = params;
 
+  console.log(API_URL);
   const result = await fetch(
     `${API_URL}/foods-by-ingredients?cookingLevel=${cookingLevel}&ingredients=${foods?.toString()}&dietaries=${dietaries?.toString()}&allergies=${allergies?.toString()}`
   );
-  const json = result.json();
+  const json = await result.json();
+  console.log(json);
   return json;
 };

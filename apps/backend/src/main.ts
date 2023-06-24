@@ -21,23 +21,28 @@ app.get('/api/foods-by-ingredients', async (req: any, res) => {
   const completion = await OpenAI.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
+      { role: 'system', content: 'You are a food expert.' },
       {
         role: 'user',
-        content: `give me a list of food that can be made with these preferences.
+        content: `give me 6 list of food that can be made with these preferences.
           - ingredients = ${ingredients}}
           - allergies = ${allergies}
           - dietaries = ${dietaries}
           - cooking level = ${cookingLevel}
 
-        And only return it with this valid json format [{ingredients: '', foodName: ''}].`,
+        Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.
+        [{ingredients: '', foodName: '', description: ''}]`,
       },
     ],
   });
 
   try {
     const data = JSON.parse(completion.data.choices[0].message.content);
+    console.log(data);
+
     res.send({ data });
   } catch (err) {
+    console.log('aw');
     res.status(400).send(err);
   }
 });

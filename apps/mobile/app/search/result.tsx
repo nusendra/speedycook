@@ -1,27 +1,29 @@
-import { ScrollView } from 'react-native';
+import { ScrollView, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import ResponsiveImage from 'react-native-responsive-image';
 import { XStack, YStack } from 'tamagui';
 import DishCard from '../../components/DishCard';
 import { useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GenerateFoodsType, generateFoods } from '../../apis';
+import { dark2, dark4 } from '../../styles/tamagui';
+import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 
 export default function Result() {
   const params = useLocalSearchParams<GenerateFoodsType>();
+  const [foods, setFoods] = useState<string[]>([]);
 
   const getFoods = async () => {
-    const result = await generateFoods(params);
-    console.log(result);
+    const { data } = await generateFoods(params);
+    setFoods(data);
   };
 
   useEffect(() => {
-    console.log(params);
     getFoods();
   }, []);
 
   return (
     <>
-      <YStack ml={24} mr={24} ai="center">
+      <YStack mx={24} ai="center">
         <ResponsiveImage
           source={require('../../assets/recipe-result-header.png')}
           initWidth="379"
@@ -29,64 +31,44 @@ export default function Result() {
           style={{ marginTop: 29 }}
         />
       </YStack>
-      <YStack f={1} mt={40}>
+      <YStack f={1} mt={20} mx={24}>
         <ScrollView>
-          <XStack mt={20} jc="space-between" mr={24} ml={24}>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food1.png')}
-                title="Vegetable Lettuce Salad with Simpl..."
-                avatar={require('../../assets/avatar.png')}
-                profileName="Clinton Mcclure"
-              />
-            </YStack>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food2.png')}
-                title="Fresh Seasoned Vegetable Salad"
-                avatar={require('../../assets/avatar2.png')}
-                profileName="Phyllis Godley"
-              />
-            </YStack>
-          </XStack>
-          <XStack mt={20} jc="space-between" mr={24} ml={24}>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food3.png')}
-                title="Vegetable & Fruit Salad with Balsa..."
-                avatar={require('../../assets/avatar.png')}
-                profileName="Jane Cooper"
-              />
-            </YStack>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food4.png')}
-                title="Vegetable and Fruit Green Salad"
-                avatar={require('../../assets/avatar2.png')}
-                profileName="Willard Purnell"
-              />
-            </YStack>
-          </XStack>
-          <XStack mt={20} jc="space-between" mr={24} ml={24}>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food5.png')}
-                title="Spiced Vegetable Salad"
-                avatar={require('../../assets/avatar.png')}
-                profileName="Florencio Dorrance"
-              />
-            </YStack>
-            <YStack width="48%" height={260}>
-              <DishCard
-                imageSource={require('../../assets/results/food6.png')}
-                title="Vegetable and Seafood Salad"
-                avatar={require('../../assets/avatar2.png')}
-                profileName="Jane Cooper"
-              />
-            </YStack>
-          </XStack>
+          {foods.map((item: any, index) => {
+            return (
+              <TouchableOpacity style={[styles.selectOption]} key={index}>
+                <Text style={styles.optionTitle}>{item.foodName}</Text>
+                <Text style={styles.optionDescription}>{item.description}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
       </YStack>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  selectOption: {
+    borderRadius: 16,
+    height: 124,
+    backgroundColor: dark2,
+    borderColor: dark4,
+    borderWidth: 1,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    marginTop: 20,
+  },
+  optionTitle: {
+    fontFamily: 'UrbanistBold',
+    color: 'white',
+    fontSize: responsiveFontSize(20),
+  },
+  optionDescription: {
+    fontFamily: 'Urbanist',
+    color: 'white',
+    fontSize: responsiveFontSize(16),
+    marginTop: 8,
+  },
+});
