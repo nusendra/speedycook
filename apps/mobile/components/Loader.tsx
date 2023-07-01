@@ -19,7 +19,7 @@ export default function Loader() {
 
   return (
     <>
-      <XStack f={1} jc="center">
+      <XStack jc="center">
         <Animated.Image
           style={[styles.loading, { transform: [{ rotate: spin }] }]}
           source={require('../assets/progress.png')}

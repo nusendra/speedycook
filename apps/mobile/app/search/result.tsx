@@ -7,15 +7,18 @@ import { GenerateFoodsType, generateFoods } from '../../apis';
 import { dark2, dark4 } from '../../styles/tamagui';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { useRouter } from 'expo-router';
+import Loader from '../../components/Loader';
 
 export default function Result() {
   const router = useRouter();
   const params = useLocalSearchParams<GenerateFoodsType>();
   const [foods, setFoods] = useState<string[]>([]);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const getFoods = async () => {
     const { data } = await generateFoods(params);
     setFoods(data);
+    setShowLoader(false);
   };
 
   const showRecipe = async (
@@ -30,6 +33,7 @@ export default function Result() {
   };
 
   useEffect(() => {
+    setShowLoader(true);
     getFoods();
   }, []);
 
@@ -44,6 +48,7 @@ export default function Result() {
         />
       </YStack>
       <YStack f={1} mt={20} mx={24}>
+        {showLoader && <Loader />}
         <ScrollView>
           {foods.map((item: any, index) => {
             return (
@@ -55,7 +60,9 @@ export default function Result() {
                 }
               >
                 <Text style={styles.optionTitle}>{item.foodName}</Text>
-                <Text style={styles.optionDescription}>{item.description}</Text>
+                <Text numberOfLines={3} style={styles.optionDescription}>
+                  {item.description}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -68,7 +75,7 @@ export default function Result() {
 const styles = StyleSheet.create({
   selectOption: {
     borderRadius: 16,
-    height: 124,
+    height: 130,
     backgroundColor: dark2,
     borderColor: dark4,
     borderWidth: 1,

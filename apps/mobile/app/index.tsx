@@ -31,7 +31,8 @@ export default function App() {
           initHeight="173"
         />
         <Text style={styles.title}>Speedycook</Text>
-
+      </YStack>
+      <YStack mb={80}>
         <Loader />
       </YStack>
     </>
