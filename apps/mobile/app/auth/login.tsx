@@ -3,20 +3,44 @@ import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
 import { XStack, YStack, ZStack } from 'tamagui';
 import { StyleSheet, ScrollView, TextInput, Text } from 'react-native';
 import { red1, dark4 } from '../../styles/tamagui';
+import RoundedButton from '../../components/RoundedButton';
 import { useState } from 'react';
-import { useAuthStore } from '../../stores/AuthStore';
-import { shallow } from 'zustand/shallow';
+import Loader from '../../components/Loader';
+import { useRouter } from 'expo-router';
+import { signIn, userSignOut } from '../../apis';
 
 export default function Login() {
-  const { email, setEmail, password, setPassword } = useAuthStore(
-    (state) => ({
-      email: state.email,
-      setEmail: state.setEmail,
-      password: state.password,
-      setPassword: state.setPassword,
-    }),
-    shallow
-  );
+  const router = useRouter();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showLoader, setShowLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const onSubmit = async () => {
+    // const a = await AsyncStorage.getAllKeys();
+    // console.log(a.find((item) => item.includes('authUser')));
+    // const b = await AsyncStorage.getItem(
+    //   'firebase:authUser:AIzaSyD1IpBOBgAuXIJOBnCZ4DUWPpbXec_-SSs:[DEFAULT]'
+    // );
+    // console.log(a);
+    // console.log(b);
+
+    setErrorMessage('');
+    if (!email || !password) {
+      setErrorMessage('Usename / Email / Password cannot be empty');
+      return null;
+    }
+
+    setShowLoader(true);
+
+    const sign = await signIn(email, password);
+    setShowLoader(false);
+    if (sign.success) {
+      router.replace('/search');
+    } else {
+      setErrorMessage(sign.data);
+    }
+  };
 
   return (
     <>
@@ -49,6 +73,8 @@ export default function Login() {
                     placeholderTextColor={dark4}
                     onChangeText={(text) => setPassword(text)}
                     value={password}
+                    secureTextEntry={true}
+                    textContentType="password"
                   />
                   <ResponsiveImage
                     source={require('../../assets/closed-eye.png')}
@@ -62,10 +88,24 @@ export default function Login() {
                   />
                 </XStack>
               </YStack>
+              {errorMessage != '' && (
+                <Text style={styles.errorMessage}>{errorMessage}</Text>
+              )}
             </ScrollView>
           </YStack>
         </YStack>
       </ZStack>
+      <YStack f={1} jc="flex-end" mb={36} ml={24} mr={24} mt={24}>
+        {showLoader && <Loader />}
+        {!showLoader && (
+          <RoundedButton
+            title="Sign In"
+            customStyle={[styles.continueButton]}
+            width="100%"
+            onPress={() => onSubmit()}
+          />
+        )}
+      </YStack>
     </>
   );
 }
@@ -99,5 +139,16 @@ const styles = StyleSheet.create({
     fontFamily: 'UrbanistBold',
     color: 'white',
     fontSize: responsiveFontSize(20),
+  },
+  errorMessage: {
+    fontFamily: 'Urbanist',
+    fontSize: responsiveFontSize(14),
+    color: red1,
+    marginTop: 24,
+  },
+  continueButton: {
+    backgroundColor: red1,
+    position: 'absolute',
+    bottom: 0,
   },
 });

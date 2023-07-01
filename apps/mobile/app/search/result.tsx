@@ -1,20 +1,32 @@
 import { ScrollView, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import ResponsiveImage from 'react-native-responsive-image';
-import { XStack, YStack } from 'tamagui';
-import DishCard from '../../components/DishCard';
+import { YStack } from 'tamagui';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { GenerateFoodsType, generateFoods } from '../../apis';
 import { dark2, dark4 } from '../../styles/tamagui';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
+import { useRouter } from 'expo-router';
 
 export default function Result() {
+  const router = useRouter();
   const params = useLocalSearchParams<GenerateFoodsType>();
   const [foods, setFoods] = useState<string[]>([]);
 
   const getFoods = async () => {
     const { data } = await generateFoods(params);
     setFoods(data);
+  };
+
+  const showRecipe = async (
+    foodName: string,
+    ingredients: string,
+    description: string
+  ) => {
+    router.push({
+      pathname: '/search/recipe',
+      params: { foodName, ingredients, description },
+    });
   };
 
   useEffect(() => {
@@ -35,7 +47,13 @@ export default function Result() {
         <ScrollView>
           {foods.map((item: any, index) => {
             return (
-              <TouchableOpacity style={[styles.selectOption]} key={index}>
+              <TouchableOpacity
+                style={[styles.selectOption]}
+                key={index}
+                onPress={() =>
+                  showRecipe(item.foodName, item.ingredients, item.description)
+                }
+              >
                 <Text style={styles.optionTitle}>{item.foodName}</Text>
                 <Text style={styles.optionDescription}>{item.description}</Text>
               </TouchableOpacity>

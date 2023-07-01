@@ -12,6 +12,7 @@ export default function SearchLayout() {
   const enum PathList {
     RECIPE_FINDER = '/search',
     RESULT = '/search/result',
+    RECIPE_DETAIL = '/search/recipe',
   }
 
   const RecipeFinderHeader = () => {
@@ -35,7 +36,9 @@ export default function SearchLayout() {
     );
   };
 
-  const NavigateBackHeader = () => {
+  const NavigateBackHeader = (props: any) => {
+    const withoutTitle = props.withoutTitle;
+
     return (
       <>
         <XStack ai="center">
@@ -44,7 +47,7 @@ export default function SearchLayout() {
             initWidth="19"
             initHeight="24"
           ></ResponsiveImage>
-          <Text style={styles.menuTitle}>Back</Text>
+          {!withoutTitle && <Text style={styles.menuTitle}>Back</Text>}
         </XStack>
       </>
     );
@@ -55,6 +58,9 @@ export default function SearchLayout() {
       <>
         {pathName === PathList.RECIPE_FINDER && <RecipeFinderHeader />}
         {pathName === PathList.RESULT && <NavigateBackHeader />}
+        {pathName === PathList.RECIPE_DETAIL && (
+          <NavigateBackHeader withoutTitle />
+        )}
       </>
     );
   };

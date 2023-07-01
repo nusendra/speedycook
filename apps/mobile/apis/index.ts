@@ -5,6 +5,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { API_URL } from '@env';
+import { errorMessages } from '../utils/constants';
 
 export const signUp = async (email: string, password: string) => {
   try {
@@ -15,12 +16,25 @@ export const signUp = async (email: string, password: string) => {
   }
 };
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (
+  email: string,
+  password: string
+): Promise<{ success: boolean; data: any }> => {
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
-    return user;
+    return {
+      success: true,
+      data: user,
+    };
   } catch (err: any) {
-    console.log(err.message);
+    const errorMessage = errorMessages.find((item) => {
+      return err.message.includes(item.key);
+    });
+    console.log(errorMessage);
+    return {
+      success: false,
+      data: errorMessage?.message,
+    };
   }
 };
 
@@ -43,11 +57,36 @@ export type GenerateFoodsType = {
 export const generateFoods = async (params: GenerateFoodsType) => {
   const { cookingLevel, foods, dietaries, allergies } = params;
 
-  console.log(API_URL);
   const result = await fetch(
     `${API_URL}/foods-by-ingredients?cookingLevel=${cookingLevel}&ingredients=${foods?.toString()}&dietaries=${dietaries?.toString()}&allergies=${allergies?.toString()}`
   );
   const json = await result.json();
   console.log(json);
+  return json;
+};
+
+export const getRecipe = async (food: string, ingredients: string) => {
+  const param = `${food},${ingredients}`;
+
+  const result = await fetch(`${API_URL}/recipes?foodName=${param}`);
+  const json = await result.json();
+
+  return json;
+};
+
+export const getInstructions = async (
+  foodName: string,
+  ingredients: string
+) => {
+  const result = await fetch(`${API_URL}/recipe-instructions`, {
+    method: 'POST',
+    body: JSON.stringify({
+      foodName,
+      ingredients,
+    }),
+  });
+  const json = await result.json();
+  console.log(json);
+
   return json;
 };
