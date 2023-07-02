@@ -4,7 +4,6 @@ import { XStack, YStack, ZStack } from 'tamagui';
 import { Slot, useRouter } from 'expo-router';
 import { red1, dark2 } from '../../styles/tamagui';
 import { responsiveFontSize } from '../../styles/ResponsiveFontSize';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AuthLayout() {
   const height = Dimensions.get('window').height;

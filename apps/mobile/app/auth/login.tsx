@@ -7,7 +7,7 @@ import RoundedButton from '../../components/RoundedButton';
 import { useState } from 'react';
 import Loader from '../../components/Loader';
 import { useRouter } from 'expo-router';
-import { signIn, userSignOut } from '../../apis';
+import { signIn } from '../../apis';
 
 export default function Login() {
   const router = useRouter();

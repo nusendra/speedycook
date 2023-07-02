@@ -15,12 +15,11 @@ export default function App() {
   const checkAuth = async () => {
     const storage = await AsyncStorage.getAllKeys();
     const foundUser = storage.find((item) => item.includes('authUser'));
-    const user = await AsyncStorage.getItem(foundUser as string);
 
-    if (user) {
-      router.push('/search');
+    if (foundUser) {
+      router.replace('/search');
     } else {
-      router.push('/home');
+      router.replace('/home');
     }
   };
 

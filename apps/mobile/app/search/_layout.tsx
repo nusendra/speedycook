@@ -1,11 +1,21 @@
 import { Slot } from 'expo-router';
-import { Dimensions, Text, StyleSheet, SafeAreaView, View } from 'react-native';
+import {
+  Dimensions,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import { usePathname } from 'expo-router';
 import { XStack, YStack, ZStack } from 'tamagui';
 import ResponsiveImage from 'react-native-responsive-image';
 import { inactive, red1 } from '../../styles/tamagui';
+import { useRouter } from 'expo-router';
 
 export default function SearchLayout() {
+  const router = useRouter();
   const height = Dimensions.get('window').height;
   const pathName = usePathname();
 
@@ -13,9 +23,10 @@ export default function SearchLayout() {
     RECIPE_FINDER = '/search',
     RESULT = '/search/result',
     RECIPE_DETAIL = '/search/recipe',
+    PROFILE = '/search/profile',
   }
 
-  const RecipeFinderHeader = () => {
+  const BasicHeader = (props: any) => {
     return (
       <>
         <XStack ai="center">
@@ -24,7 +35,7 @@ export default function SearchLayout() {
             initWidth="19"
             initHeight="24"
           ></ResponsiveImage>
-          <Text style={styles.menuTitle}>Recipe Finder</Text>
+          <Text style={styles.menuTitle}>{props.title}</Text>
           <ResponsiveImage
             source={require('../../assets/bookmark.png')}
             initWidth="20"
@@ -56,11 +67,14 @@ export default function SearchLayout() {
   const Header = () => {
     return (
       <>
-        {pathName === PathList.RECIPE_FINDER && <RecipeFinderHeader />}
+        {pathName === PathList.RECIPE_FINDER && (
+          <BasicHeader title="Recipe Finder" />
+        )}
         {pathName === PathList.RESULT && <NavigateBackHeader />}
         {pathName === PathList.RECIPE_DETAIL && (
           <NavigateBackHeader withoutTitle />
         )}
+        {pathName === PathList.PROFILE && <BasicHeader title="Profile" />}
       </>
     );
   };
@@ -92,11 +106,22 @@ export default function SearchLayout() {
               />
             </View>
             <YStack ai="center">
-              <ResponsiveImage
-                source={require('../../assets/people.png')}
-                initWidth="19"
-                initHeight="20"
-              />
+              <Pressable
+                style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
+                hitSlop={{
+                  left: 100,
+                  right: 100,
+                  bottom: 100,
+                  top: 100,
+                }}
+                onPress={() => router.push('/search/profile')}
+              >
+                <ResponsiveImage
+                  source={require('../../assets/people.png')}
+                  initWidth="19"
+                  initHeight="20"
+                />
+              </Pressable>
               <Text style={styles.bottomTextIcon}>Profile</Text>
             </YStack>
           </XStack>

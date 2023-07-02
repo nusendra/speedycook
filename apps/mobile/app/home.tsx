@@ -32,9 +32,8 @@ export default function Welcome() {
       case 'haveAccount':
         const storage = await AsyncStorage.getAllKeys();
         const foundUser = storage.find((item) => item.includes('authUser'));
-        const user = await AsyncStorage.getItem(foundUser as string);
 
-        if (user) {
+        if (foundUser) {
           router.push('/search');
         } else {
           router.push('/auth/login');

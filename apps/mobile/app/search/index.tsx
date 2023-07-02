@@ -17,7 +17,6 @@ import { db } from '../../firebaseConfig';
 import { doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
-import { isArraySame } from '../../utils/isSameArrays';
 
 export default function SearchIndex() {
   const router = useRouter();
@@ -35,8 +34,6 @@ export default function SearchIndex() {
     const allKeys = await AsyncStorage.getAllKeys();
     const found = allKeys.find((item) => item.includes('authUser'));
 
-    // const user = await AsyncStorage.getItem(found as string);
-    // setUserData(JSON.parse(user as string));
     let userData = await AsyncStorage.getItem(found as string);
     userData = JSON.parse(userData as string);
 
