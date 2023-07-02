@@ -17,14 +17,6 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = async () => {
-    // const a = await AsyncStorage.getAllKeys();
-    // console.log(a.find((item) => item.includes('authUser')));
-    // const b = await AsyncStorage.getItem(
-    //   'firebase:authUser:AIzaSyD1IpBOBgAuXIJOBnCZ4DUWPpbXec_-SSs:[DEFAULT]'
-    // );
-    // console.log(a);
-    // console.log(b);
-
     setErrorMessage('');
     if (!email || !password) {
       setErrorMessage('Usename / Email / Password cannot be empty');

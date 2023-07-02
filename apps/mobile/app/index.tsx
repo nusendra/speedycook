@@ -6,14 +6,27 @@ import { useEffect } from 'react';
 import { responsiveFontSize } from '../styles/ResponsiveFontSize';
 import { useRouter } from 'expo-router';
 import Loader from '../components/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const router = useRouter();
 
+  const checkAuth = async () => {
+    const storage = await AsyncStorage.getAllKeys();
+    const foundUser = storage.find((item) => item.includes('authUser'));
+    const user = await AsyncStorage.getItem(foundUser as string);
+
+    if (user) {
+      router.push('/search');
+    } else {
+      router.push('/home');
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/home');
+      checkAuth();
     }, 1000);
     return () => clearTimeout(timer);
   }, []);

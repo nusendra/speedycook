@@ -9,6 +9,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, EXPO_CLIENT_ID } from '@env';
 import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -23,13 +24,21 @@ export default function Welcome() {
     expoClientId: EXPO_CLIENT_ID,
   });
 
-  const sign = (type: SignType) => {
+  const sign = async (type: SignType) => {
     switch (type) {
       case 'google':
         prompAsync();
         break;
       case 'haveAccount':
-        router.push('/auth/login');
+        const storage = await AsyncStorage.getAllKeys();
+        const foundUser = storage.find((item) => item.includes('authUser'));
+        const user = await AsyncStorage.getItem(foundUser as string);
+
+        if (user) {
+          router.push('/search');
+        } else {
+          router.push('/auth/login');
+        }
         break;
 
       default:
