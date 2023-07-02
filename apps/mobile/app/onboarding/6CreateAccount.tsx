@@ -72,6 +72,7 @@ export default function CreateAccount() {
                     placeholderTextColor={dark4}
                     onChangeText={(text) => setPassword(text)}
                     value={password}
+                    secureTextEntry={true}
                   />
                   <ResponsiveImage
                     source={require('../../assets/closed-eye.png')}
@@ -94,6 +95,7 @@ export default function CreateAccount() {
                     placeholderTextColor={dark4}
                     onChangeText={(text) => setConfirmPassword(text)}
                     value={confirmPassword}
+                    secureTextEntry={true}
                   />
                   <ResponsiveImage
                     source={require('../../assets/closed-eye.png')}

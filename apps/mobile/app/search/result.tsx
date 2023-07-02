@@ -1,6 +1,6 @@
 import { ScrollView, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import ResponsiveImage from 'react-native-responsive-image';
-import { YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { GenerateFoodsType, generateFoods } from '../../apis';
@@ -48,7 +48,11 @@ export default function Result() {
         />
       </YStack>
       <YStack f={1} mt={20} mx={24}>
-        {showLoader && <Loader />}
+        {showLoader && (
+          <XStack f={1} jc="center">
+            <Loader />
+          </XStack>
+        )}
         <ScrollView>
           {foods.map((item: any, index) => {
             return (

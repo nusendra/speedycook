@@ -6,6 +6,7 @@ import { red1, dark4, dark2 } from '../../styles/tamagui';
 import { useLocalSearchParams } from 'expo-router';
 import { getInstructions, getRecipe } from '../../apis';
 import { useState, useEffect } from 'react';
+import Loader from '../../components/Loader';
 
 export default function RecipeDetail() {
   const params = useLocalSearchParams();
@@ -13,12 +14,7 @@ export default function RecipeDetail() {
   const [description, setDescription] = useState<string>('');
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
-
-  // const instructions = [
-  //   'In a large salad bowl, combine the chopped lettuce, grated carrot, sliced cucumber, chopped apple, cherry tomatoes, and raisins.',
-  //   'In a large salad bowl, combine the chopped lettuce, grated carrot, sliced cucumber, chopped apple, cherry tomatoes, and raisins.',
-  //   'In a large salad bowl, combine the chopped lettuce, grated carrot, sliced cucumber, chopped apple, cherry tomatoes, and raisins.',
-  // ];
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const fetchRecipe = async () => {
     const { foodName, ingredients, description } = params;
@@ -34,11 +30,12 @@ export default function RecipeDetail() {
       // @ts-ignore
       ingredients.toString()
     );
-    console.log(instructions.data.instructions);
     setInstructions(instructions.data.instructions);
+    setShowLoader(false);
   };
 
   useEffect(() => {
+    setShowLoader(true);
     fetchRecipe();
   }, []);
 
@@ -54,49 +51,56 @@ export default function RecipeDetail() {
         <Text style={styles.title}>{foodName}</Text>
       </YStack>
       <Separator mb={16} marginHorizontal={20} borderColor={dark4} />
-      <YStack ml={24} mr={24} mb={36}>
-        <Text style={styles.subTitle}>{description}</Text>
-      </YStack>
-      <Separator mb={16} marginHorizontal={20} borderColor={dark4} />
-      <YStack f={1} mb={10} mr={24}>
-        <ScrollView>
-          <YStack ml={24} mr={24} mb={20}>
-            <Text style={styles.ingredientTitle}>Ingredients :</Text>
-          </YStack>
-          <YStack ml={24} mr={24} mb={36}>
-            {ingredients.map((item, index) => {
-              return (
-                <XStack key={index}>
-                  <View style={styles.circledNumber}>
-                    <Text style={styles.circledText}>{index + 1}</Text>
-                  </View>
-                  <Text style={[styles.subTitle, { marginTop: 15 }]}>
-                    {item}
-                  </Text>
-                </XStack>
-              );
-            })}
-          </YStack>
-          <Separator mb={16} marginHorizontal={20} borderColor={dark4} />
-          <YStack ml={24} mr={24} mb={20}>
-            <Text style={styles.ingredientTitle}>Instructions :</Text>
-          </YStack>
-          <YStack ml={24} mr={24} mb={36}>
-            {instructions.map((item, index) => {
-              return (
-                <XStack key={index}>
-                  <View style={styles.circledNumber}>
-                    <Text style={styles.circledText}>{index + 1}</Text>
-                  </View>
-                  <Text style={[styles.subTitle, { marginTop: 15 }]}>
-                    {item}
-                  </Text>
-                </XStack>
-              );
-            })}
-          </YStack>
-        </ScrollView>
-      </YStack>
+      {showLoader && (
+        <XStack f={1} jc="center">
+          <Loader />
+        </XStack>
+      )}
+      {!showLoader && (
+        <YStack f={1} mb={10} mr={24}>
+          <ScrollView>
+            <YStack ml={24} mr={24} mb={36}>
+              <Text style={styles.subTitle}>{description}</Text>
+            </YStack>
+            <Separator mb={16} marginHorizontal={20} borderColor={dark4} />
+            <YStack ml={24} mr={24} mb={20}>
+              <Text style={styles.ingredientTitle}>Ingredients :</Text>
+            </YStack>
+            <YStack ml={24} mr={24} mb={36}>
+              {ingredients.map((item, index) => {
+                return (
+                  <XStack key={index}>
+                    <View style={styles.circledNumber}>
+                      <Text style={styles.circledText}>{index + 1}</Text>
+                    </View>
+                    <Text style={[styles.subTitle, { marginTop: 15 }]}>
+                      {item}
+                    </Text>
+                  </XStack>
+                );
+              })}
+            </YStack>
+            <Separator mb={16} marginHorizontal={20} borderColor={dark4} />
+            <YStack ml={24} mr={24} mb={20}>
+              <Text style={styles.ingredientTitle}>Instructions :</Text>
+            </YStack>
+            <YStack ml={24} mr={24} mb={36}>
+              {instructions.map((item, index) => {
+                return (
+                  <XStack key={index}>
+                    <View style={styles.circledNumber}>
+                      <Text style={styles.circledText}>{index + 1}</Text>
+                    </View>
+                    <Text style={[styles.subTitle, { marginTop: 15 }]}>
+                      {item}
+                    </Text>
+                  </XStack>
+                );
+              })}
+            </YStack>
+          </ScrollView>
+        </YStack>
+      )}
     </>
   );
 }
