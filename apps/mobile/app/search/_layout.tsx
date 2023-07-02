@@ -109,10 +109,10 @@ export default function SearchLayout() {
               <Pressable
                 style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
                 hitSlop={{
-                  left: 100,
-                  right: 100,
-                  bottom: 100,
-                  top: 100,
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                  top: 10,
                 }}
                 onPress={() => router.push('/search/profile')}
               >
