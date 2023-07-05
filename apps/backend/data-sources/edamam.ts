@@ -1,4 +1,6 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const APP_ID = process.env.EDAMAM_APP_ID;
 const APP_KEY = process.env.EDAMAM_APP_KEY;

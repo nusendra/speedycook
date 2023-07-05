@@ -82,7 +82,7 @@ app.post(`/api/recipe-instructions`, async (req: any, res) => {
         ${ingredients}
 
         do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
-{instructions:['string']}
+{instructions:['']}
 
         and don't put index number
         `,
