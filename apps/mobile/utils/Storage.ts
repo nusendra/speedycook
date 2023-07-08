@@ -8,3 +8,13 @@ export const storeData = async (key: string, value: any) => {
     console.log(e);
   }
 };
+
+export const getUserStorage = async () => {
+  const allKeys = await AsyncStorage.getAllKeys();
+  const found = allKeys.find((item) => item.includes('authUser'));
+
+  let userData = await AsyncStorage.getItem(found as string);
+  userData = JSON.parse(userData as string);
+
+  return userData;
+};

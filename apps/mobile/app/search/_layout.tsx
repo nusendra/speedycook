@@ -36,12 +36,14 @@ export default function SearchLayout() {
             initHeight="24"
           ></ResponsiveImage>
           <Text style={styles.menuTitle}>{props.title}</Text>
-          <ResponsiveImage
-            source={require('../../assets/bookmark.png')}
-            initWidth="20"
-            initHeight="24"
-            style={{ right: 11, position: 'absolute' }}
-          ></ResponsiveImage>
+          {props.withBookmark && (
+            <ResponsiveImage
+              source={require('../../assets/bookmark.png')}
+              initWidth="20"
+              initHeight="24"
+              style={{ right: 11, position: 'absolute' }}
+            ></ResponsiveImage>
+          )}
         </XStack>
       </>
     );
@@ -68,7 +70,7 @@ export default function SearchLayout() {
     return (
       <>
         {pathName === PathList.RECIPE_FINDER && (
-          <BasicHeader title="Recipe Finder" />
+          <BasicHeader title="Recipe Finder" withBookmark={true} />
         )}
         {pathName === PathList.RESULT && <NavigateBackHeader />}
         {pathName === PathList.RECIPE_DETAIL && (

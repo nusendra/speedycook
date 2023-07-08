@@ -71,6 +71,7 @@ export const getRecipe = async (food: string, ingredients: string) => {
   const param = `${food},${ingredients}`;
   console.log(API_URL);
 
+  console.log(API_URL);
   const result = await fetch(`${API_URL}/recipes?foodName=${param}`);
   const json = await result.json();
 
@@ -81,6 +82,7 @@ export const getInstructions = async (
   foodName: string,
   ingredients: string
 ) => {
+  console.log(API_URL);
   console.log(API_URL);
   const result = await fetch(`${API_URL}/recipe-instructions`, {
     method: 'POST',
