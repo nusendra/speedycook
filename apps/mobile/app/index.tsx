@@ -17,7 +17,7 @@ export default function App() {
     const foundUser = storage.find((item) => item.includes('authUser'));
 
     if (foundUser) {
-      router.replace('/search');
+      router.replace('/search/random');
     } else {
       router.replace('/home');
     }

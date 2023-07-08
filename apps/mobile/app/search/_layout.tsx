@@ -24,6 +24,7 @@ export default function SearchLayout() {
     RESULT = '/search/result',
     RECIPE_DETAIL = '/search/recipe',
     PROFILE = '/search/profile',
+    RANDOM = '/search/random',
   }
 
   const BasicHeader = (props: any) => {
@@ -77,6 +78,9 @@ export default function SearchLayout() {
           <NavigateBackHeader withoutTitle />
         )}
         {pathName === PathList.PROFILE && <BasicHeader title="Profile" />}
+        {pathName === PathList.RANDOM && (
+          <BasicHeader title="Home" withBookmark={true} />
+        )}
       </>
     );
   };
@@ -91,21 +95,43 @@ export default function SearchLayout() {
         <YStack f={0.12} jc="flex-end" mb={36} ml={24} mr={24}>
           <XStack jc="space-around" ai="center">
             <YStack ai="center">
-              <ResponsiveImage
-                source={require('../../assets/Home.png')}
-                initWidth="19"
-                initHeight="20"
-              />
+              <Pressable
+                style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
+                hitSlop={{
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                  top: 10,
+                }}
+                onPress={() => router.push('/search/random')}
+              >
+                <ResponsiveImage
+                  source={require('../../assets/Home.png')}
+                  initWidth="19"
+                  initHeight="20"
+                />
+              </Pressable>
               <Text style={styles.bottomTextIcon}>Home</Text>
             </YStack>
             <View
               style={{ backgroundColor: red1, padding: 12, borderRadius: 100 }}
             >
-              <ResponsiveImage
-                source={require('../../assets/search.png')}
-                initWidth="19"
-                initHeight="20"
-              />
+              <Pressable
+                style={({ pressed }) => [{}, { opacity: pressed ? 0.5 : 1 }]}
+                hitSlop={{
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                  top: 10,
+                }}
+                onPress={() => router.push('/search')}
+              >
+                <ResponsiveImage
+                  source={require('../../assets/search.png')}
+                  initWidth="19"
+                  initHeight="20"
+                />
+              </Pressable>
             </View>
             <YStack ai="center">
               <Pressable

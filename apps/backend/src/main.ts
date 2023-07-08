@@ -1,8 +1,8 @@
 import express from 'express';
 import OpenAI from '../data-sources/openapi';
 import { getRecipe } from '../data-sources/edamam';
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
@@ -96,7 +96,41 @@ app.post(`/api/recipe-instructions`, async (req: any, res) => {
 
     res.send({ data });
   } catch (err) {
-    console.log('aw');
+    res.status(400).send(err);
+  }
+});
+
+app.get('/api/random-foods', async (req: any, res) => {
+  const allergies = req.query.allergies;
+  const dietaries = req.query.dietaries;
+  const cookingLevel = req.query.cookingLevel;
+
+  const completion = await OpenAI.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      { role: 'system', content: 'You are a food expert.' },
+      {
+        role: 'user',
+        content: `give me 6 list of random food that can be made with these preferences.
+          - allergies = ${allergies}
+          - dietaries = ${dietaries}
+          - cooking level = ${cookingLevel}
+
+        Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.
+        [{ingredients: '', foodName: '', description: ''}]
+
+        For description, give me a complete and detailed description of those foods
+        `,
+      },
+    ],
+  });
+
+  try {
+    const data = JSON.parse(completion.data.choices[0].message.content);
+    console.log(data);
+
+    res.send({ data });
+  } catch (err) {
     res.status(400).send(err);
   }
 });

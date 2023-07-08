@@ -56,22 +56,20 @@ export type GenerateFoodsType = {
 
 export const generateFoods = async (params: GenerateFoodsType) => {
   const { cookingLevel, foods, dietaries, allergies } = params;
-  console.log(API_URL);
+  console.log(params);
 
   const result = await fetch(
     `${API_URL}/foods-by-ingredients?cookingLevel=${cookingLevel}&ingredients=${foods?.toString()}&dietaries=${dietaries?.toString()}&allergies=${allergies?.toString()}`
   );
 
   const json = await result.json();
-  console.log(json);
   return json;
 };
 
 export const getRecipe = async (food: string, ingredients: string) => {
   const param = `${food},${ingredients}`;
-  console.log(API_URL);
+  console.log(param);
 
-  console.log(API_URL);
   const result = await fetch(`${API_URL}/recipes?foodName=${param}`);
   const json = await result.json();
 
@@ -82,8 +80,6 @@ export const getInstructions = async (
   foodName: string,
   ingredients: string
 ) => {
-  console.log(API_URL);
-  console.log(API_URL);
   const result = await fetch(`${API_URL}/recipe-instructions`, {
     method: 'POST',
     body: JSON.stringify({
@@ -92,7 +88,20 @@ export const getInstructions = async (
     }),
   });
   const json = await result.json();
-  console.log(json);
 
+  return json;
+};
+
+export const getRandomFoods = async (
+  params: Omit<GenerateFoodsType, 'foods'>
+) => {
+  const { cookingLevel, dietaries, allergies } = params;
+  console.log(params);
+
+  const result = await fetch(
+    `${API_URL}/random-foods?cookingLevel=${cookingLevel}&dietaries=${dietaries?.toString()}&allergies=${allergies?.toString()}`
+  );
+
+  const json = await result.json();
   return json;
 };
