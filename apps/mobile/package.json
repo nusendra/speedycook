@@ -23,7 +23,14 @@
     "@nx/expo": "*",
     "@expo/metro-config": "*",
     "@tamagui/animations-react-native": "*",
-    "@tamagui/font-inter": "*"
+    "@tamagui/font-inter": "*",
+    "react-native-screens": "~3.20.0",
+    "react-native-safe-area-context": "4.5.0",
+    "react-native-gesture-handler": "^2.12.0",
+    "react-native-dropdown-picker": "^5.4.6",
+    "react-native-reanimated": "^3.3.0",
+    "react-native-responsive-image": "^2.3.1",
+    "react-native-svg-transformer": "1.0.0"
   },
   "scripts": {
     "postinstall": "rm -r node_modules && cd ../../ && yarn install && npx nx sync-deps mobile && npx nx ensure-symlink mobile"

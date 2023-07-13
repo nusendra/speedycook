@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -41,6 +42,7 @@ export const signIn = async (
 export const userSignOut = async () => {
   try {
     const user = await signOut(auth);
+    await AsyncStorage.clear();
     return user;
   } catch (err: any) {
     console.log(err.message);

@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import Loader from '../../components/Loader';
 import { getUserStorage } from '../../utils/Storage';
 import { getUserDoc } from '../../services/get-user-doc';
+import { userSignOut } from '../../apis';
 
 export default function Result() {
   const router = useRouter();
@@ -15,22 +16,27 @@ export default function Result() {
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const getFoods = async () => {
-    const user = await getUserStorage();
-    // @ts-ignore
-    const userDoc = await getUserDoc(user.uid);
-    // @ts-ignore
-    const allergies = userDoc.allergies;
-    // @ts-ignore
-    const cookingLevel = userDoc.cookingLevel;
-    // @ts-ignore
-    const dietaries = userDoc.dietaries;
+    try {
+      const user = await getUserStorage();
+      // @ts-ignore
+      const userDoc = await getUserDoc(user.uid);
+      // @ts-ignore
+      const allergies = userDoc.allergies;
+      // @ts-ignore
+      const cookingLevel = userDoc.cookingLevel;
+      // @ts-ignore
+      const dietaries = userDoc.dietaries;
 
-    const { data } = await getRandomFoods({
-      allergies,
-      cookingLevel,
-      dietaries,
-    });
-    setFoods(data);
+      const { data } = await getRandomFoods({
+        allergies,
+        cookingLevel,
+        dietaries,
+      });
+      setFoods(data);
+    } catch (err) {
+      userSignOut();
+      router.replace('/home');
+    }
     setShowLoader(false);
   };
 
