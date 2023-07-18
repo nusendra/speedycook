@@ -5,7 +5,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import { API_URL } from '@env';
+import { API_URL } from '../env';
 import { errorMessages } from '../utils/constants';
 
 export const signUp = async (email: string, password: string) => {
